@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Vite Express Hostinger Setup",
+  "description": "A React and Vite SPA configured with an Express server in the root for seamless deployment to Hostinger, Caprover, or other Node environments.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
