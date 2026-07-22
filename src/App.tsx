@@ -62,70 +62,319 @@ interface Product {
   stars: number;
   badge?: string;
   isBestSeller?: boolean;
+  hasBannerImage?: boolean;
+  bannerText?: string;
+  ageBadge?: string;
+  topRightBadge?: string;
+  ratingValue?: number;
+  ratingLabel?: string;
 }
+
+// Helper to render product image (handles both file paths and fallback emojis)
+const renderProductImage = (imageStr: string, className: string = "w-full h-full object-contain", emojiSizeClass: string = "text-6xl") => {
+  if (imageStr && (imageStr.startsWith("/") || imageStr.startsWith("http"))) {
+    return (
+      <img 
+        src={imageStr} 
+        alt="Product" 
+        className={className} 
+        referrerPolicy="no-referrer" 
+      />
+    );
+  }
+  return <span className={`select-none ${emojiSizeClass}`}>{imageStr || "📦"}</span>;
+};
 
 // --- PRODUCT DATA ---
 const PRODUCTS: Product[] = [
   {
-    id: "prod-1",
-    name: "Deluxe 3D Plaster Painting Kit",
-    description: "Includes 6 adorable animal plaster models, 12 vibrant non-toxic washable paints, 2 premium brushes, and a mixing palette.",
-    price: 24.99,
+    id: "prod-name-kit",
+    name: "Alphabet Set (8-12 Letters)",
+    description: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake.",
+    price: 399,
     category: "plaster",
-    image: "🎨",
+    image: "/src/assets/images/custom_name_kit_1784717468351.jpg",
     stars: 5,
+    ratingValue: 4.9,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "✨ CUSTOM CERAMIC ALPHABET SET",
+    ageBadge: "🥚 All Ages",
+    topRightBadge: "8-12 Letters ✨",
+    badge: "Highly Customized",
+    isBestSeller: true
+  },
+  {
+    id: "prod-extra-medium-toy",
+    name: "Single Ceramic Toy",
+    description: "Perfect for creative play, school activities, party favors, gifts, and DIY painting projects. Each ceramic toy is made from high-quality material and is ready to be painted.",
+    price: 10,
+    category: "plaster",
+    image: "/src/assets/images/extra_medium_toy_1784717566247.jpg",
+    stars: 4,
+    ratingValue: 4.7,
+    ratingLabel: "TOYS",
+    hasBannerImage: true,
+    bannerText: "🧸 READY TO PAINT MEDIUM TOY",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Medium Size 🧸"
+  },
+  {
+    id: "prod-extra-brush",
+    name: "Extra Paint Brush",
+    description: "A high-quality paint brush designed for ceramic painting, DIY crafts, and creative projects. Easy to hold, smooth to use, and perfect for detailed artwork.",
+    price: 40,
+    category: "accessories",
+    image: "/src/assets/images/extra_paint_brush_1784717546894.jpg",
+    stars: 4,
+    ratingValue: 4.8,
+    ratingLabel: "BRUSHES",
+    hasBannerImage: true,
+    bannerText: "🖌️ PREMIUM FINE DETAIL BRUSH",
+    ageBadge: "🥚 All Ages",
+    topRightBadge: "Fine Brush 🖌️"
+  },
+  {
+    id: "prod-medium-kit",
+    name: "Medium Painting Kit",
+    description: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination.",
+    price: 299,
+    category: "plaster",
+    image: "/src/assets/images/medium_paint_kit_1784717482944.jpg",
+    stars: 5,
+    ratingValue: 4.9,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "🔥 HOT SELLER - 9 TOYS INSIDE!",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Hot Seller 🔥",
+    badge: "Best Value",
+    isBestSeller: true
+  },
+  {
+    id: "prod-paint-strip",
+    name: "Extra 6 Color Paint Strip",
+    description: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Perfect as a refill or for extra creative options.",
+    price: 80,
+    category: "paints",
+    image: "/src/assets/images/extra_paint_strip_1784717529660.jpg",
+    stars: 5,
+    ratingValue: 4.8,
+    ratingLabel: "BRUSHES",
+    hasBannerImage: true,
+    bannerText: "🎨 6 COLOURS PAINT STRIP",
+    ageBadge: "🥚 All Ages",
+    topRightBadge: "6 Colours 🎨"
+  },
+  {
+    id: "prod-large-kit",
+    name: "Large Painting Kit",
+    description: "Large Paint & Play Kit. A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination.",
+    price: 399,
+    category: "plaster",
+    image: "/src/assets/images/large_paint_kit_1784717515804.jpg",
+    stars: 5,
+    ratingValue: 4.9,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "✨ MINI PAINT STATION - 14 TOYS INSIDE!",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "14 Toys Pack ✨",
     badge: "Best Seller",
     isBestSeller: true
   },
   {
-    id: "prod-2",
-    name: "Storybook Wooden Craft Kit",
-    description: "Laser-cut high-quality wooden characters with fantasy storybook outlines, safe wooden base, and mess-free child-friendly paint pots.",
-    price: 19.99,
-    category: "wooden",
-    image: "🪵",
-    stars: 5,
-    badge: "Eco-Friendly",
-    isBestSeller: true
-  },
-  {
-    id: "prod-3",
-    name: "Kids Jumbo Washable Paint Set (12 Colors)",
-    description: "Premium high-coverage paints that wash off skin, clothes, and walls easily with soap and warm water. 100% safe & certified organic colors.",
-    price: 12.49,
-    category: "paints",
-    image: "🌈",
-    stars: 4
-  },
-  {
-    id: "prod-4",
-    name: "Dino World 3D Plaster Figures Pack",
-    description: "Roar into creativity! Includes 4 giant dinosaur plaster figures, glitter coats, professional paintbrushes, and prehistoric stickers.",
-    price: 16.99,
+    id: "prod-small-kit",
+    name: "Small Painting Kit 🎨",
+    description: "Perfect starter paint-and-play set for young creators. Includes 2 large figures, 2 small figures, paints, and brush.",
+    price: 199,
     category: "plaster",
-    image: "🦖",
+    image: "/src/assets/images/small_paint_kit_1784717498828.jpg",
     stars: 5,
+    ratingValue: 4.8,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "🎨 STARTER PAINT KIT",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Starter Set 🧁",
+    badge: "Starter Set"
+  },
+  {
+    id: "prod-extra-big-toy",
+    name: "1 Extra Toy (Big Size)",
+    description: "Single large-size ceramic toy model. Adds extra fun and paintable variety to any child's coloring adventure.",
+    price: 15,
+    category: "plaster",
+    image: "/src/assets/images/extra_big_toy_1784717581622.jpg",
+    stars: 5,
+    ratingValue: 4.7,
+    ratingLabel: "TOYS",
+    hasBannerImage: true,
+    bannerText: "🦖 LARGE CERAMIC FIGURINE",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Big Size 🦖",
     badge: "New Release"
-  },
-  {
-    id: "prod-5",
-    name: "Magical Butterfly Wooden Board",
-    description: "A gorgeous, pre-drawn wooden board with complex beautiful mandala butterfly outlines, brush sets, and glitter paints for children.",
-    price: 14.99,
-    category: "wooden",
-    image: "🦋",
-    stars: 4
-  },
-  {
-    id: "prod-6",
-    name: "Mini Paint Station Starter Apron & Brush Pack",
-    description: "Keep creative work clean! Soft waterproof kid-sized apron with pockets, and a selection of 6 multi-tip child-friendly comfort brushes.",
-    price: 9.99,
-    category: "accessories",
-    image: "🧑‍🎨",
-    stars: 5
   }
 ];
+
+// --- PRODUCT DETAILS RECONCILIATION ---
+interface RichProductDetail {
+  title: string;
+  price: number;
+  image: string;
+  desc: string;
+  included: string[];
+  notes: string[];
+  shortHeading?: string;
+  whatsapp?: string;
+  mixedNote?: string;
+}
+
+function getProductDetails(id: string): RichProductDetail {
+  switch (id) {
+    case "prod-name-kit":
+      return {
+        title: "Custom Name Painting Kit",
+        price: 399,
+        image: "/src/assets/images/custom_name_kit_1784717468351.jpg",
+        desc: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake that's fun to make and beautiful to display. Perfect for kids, birthday gifts, room décor, return gifts, and creative activities.",
+        included: [
+          "Custom Ceramic Name (8-12 Letters)",
+          "6 Vibrant Paint Colours",
+          "1 Paint Brush"
+        ],
+        notes: [
+          "Price applies to names with 8-12 letters only.",
+          "For names longer than 12 letters, please contact us for a custom quote.",
+          "Enter your desired name in the checkout form or send it via WhatsApp after placing your order."
+        ]
+      };
+    case "prod-medium-kit":
+      return {
+        title: "Medium Painting Kit 🎨",
+        price: 299,
+        image: "/src/assets/images/medium_paint_kit_1784717482944.jpg",
+        shortHeading: "Medium Paint & Play Kit 🎨",
+        desc: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination. Perfect for birthdays, gifts, family activities, classrooms, and screen-free fun.",
+        included: [
+          "5 Large Ceramic Toys",
+          "4 Small Ceramic Toys",
+          "6 Vibrant Paint Colours",
+          "1 Paint Brush"
+        ],
+        whatsapp: "0315-6950134",
+        notes: [
+          "All ceramic items are carefully molded with safe, smooth edges.",
+          "Non-toxic, ultra-washable kids paint strip included."
+        ]
+      };
+    case "prod-small-kit":
+      return {
+        title: "Small Painting Kit 🎨",
+        price: 199,
+        image: "/src/assets/images/small_paint_kit_1784717498828.jpg",
+        shortHeading: "Mini Paint Station – Paint & Play Kit 🎨",
+        desc: "A fun DIY painting kit that inspires creativity and imaginative play. Perfect for gifts, birthdays, classrooms, family activities, and screen-free fun.",
+        included: [
+          "2 Large Ceramic Toys",
+          "2 Small Ceramic Toys",
+          "3 Paint Colours",
+          "1 Paint Brush"
+        ],
+        whatsapp: "0315-6950134",
+        mixedNote: "Mixed toy assortment included. Contact us before ordering if you have specific toy preferences.",
+        notes: [
+          "Compact starter set, ideal for children aged 3+.",
+          "Washes off skin and clothes with warm water instantly."
+        ]
+      };
+    case "prod-large-kit":
+      return {
+        title: "Large Painting Kit 🎨",
+        price: 399,
+        image: "/src/assets/images/large_paint_kit_1784717515804.jpg",
+        desc: "A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination. Kids can paint, decorate, and personalize their favorite designs while developing creativity and fine motor skills. Perfect for birthdays, gifts, family activities, classrooms, and screen-free play.",
+        included: [
+          "9 Large Ceramic Toys",
+          "5 Small Ceramic Toys",
+          "12 Vibrant Paint Colours",
+          "1 Paint Brush"
+        ],
+        notes: [
+          "The most complete set, great for group sessions and siblings.",
+          "Comes with high-capacity non-toxic paint strips."
+        ]
+      };
+    case "prod-paint-strip":
+      return {
+        title: "Extra 6 Color Paint Strip",
+        price: 80,
+        image: "/src/assets/images/extra_paint_strip_1784717529660.jpg",
+        desc: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Need extra paint or some new shades for your craft project? Our extra six-color paint strip has high-coverage pots.",
+        included: [
+          "6 Vibrant Paint Colours",
+          "3ml in Each Pot"
+        ],
+        notes: [
+          "Super washable formula - mess free!",
+          "Perfect as a refill or extra set."
+        ]
+      };
+    case "prod-extra-brush":
+      return {
+        title: "Extra Paint Brush",
+        price: 40,
+        image: "/src/assets/images/extra_paint_brush_1784717546894.jpg",
+        desc: "A high-quality paint brush designed for ceramic painting, DIY crafts, and detailed creative projects. Easy to hold, smooth to use, and perfect for detailed artwork.",
+        included: [
+          "1 Premium Paint Brush"
+        ],
+        notes: [
+          "Durable wooden handle tailored for children's hands.",
+          "Perfect as a replacement or extra brush for creative fun."
+        ]
+      };
+    case "prod-extra-medium-toy":
+      return {
+        title: "1 Extra Toy (Medium Size)",
+        price: 10,
+        image: "/src/assets/images/extra_medium_toy_1784717566247.jpg",
+        desc: "Perfect for creative play, school activities, party favors, gifts, and DIY painting projects. Each ceramic toy is made from high-quality material and is ready to be painted.",
+        included: [
+          "1 Small/Medium Ceramic Toy",
+          "Ready to Paint & Decorate"
+        ],
+        notes: [
+          "Toy designs are selected from our available collection and may vary.",
+          "100% dust-free and ready to color."
+        ]
+      };
+    case "prod-extra-big-toy":
+      return {
+        title: "1 Extra Toy (Big Size)",
+        price: 15,
+        image: "/src/assets/images/extra_big_toy_1784717581622.jpg",
+        desc: "Single high-quality large ceramic toy model. Adds extra fun and scale to your child's coloring adventures. Great as a single focal piece to practice detailed painting.",
+        included: [
+          "1 Large Ceramic Toy",
+          "Ready to Paint & Decorate"
+        ],
+        notes: [
+          "Carefully packaged to prevent chipping.",
+          "Designs vary depending on stock."
+        ]
+      };
+    default:
+      return {
+        title: "Creative Painting Item",
+        price: 0,
+        image: "🎨",
+        desc: "High-quality premium craft and paint supplies for endless fun and creativity.",
+        included: ["1 Premium Item"],
+        notes: ["Washes off easily and 100% safe."]
+      };
+  }
+}
 
 // --- TEMPLATES FOR KIDS STUDIO ---
 interface DrawingTemplate {
@@ -272,6 +521,97 @@ const TEMPLATES: DrawingTemplate[] = [
       ctx.beginPath(); ctx.arc(180, 280, 10, 0, Math.PI * 2); ctx.stroke();
       ctx.beginPath(); ctx.arc(320, 280, 10, 0, Math.PI * 2); ctx.stroke();
     }
+  },
+  {
+    id: "fish",
+    name: "Cute Baby Fish",
+    icon: "🐠",
+    draw: (ctx, w, h) => {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "#44403c";
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Fish body
+      ctx.beginPath();
+      ctx.ellipse(250, 200, 110, 70, 0, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Tail fin
+      ctx.beginPath();
+      ctx.moveTo(145, 185);
+      ctx.lineTo(80, 120);
+      ctx.lineTo(100, 200);
+      ctx.lineTo(80, 280);
+      ctx.lineTo(145, 215);
+      ctx.stroke();
+
+      // Eye
+      ctx.fillStyle = "#44403c";
+      ctx.beginPath();
+      ctx.arc(310, 185, 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Smile mouth
+      ctx.beginPath();
+      ctx.arc(330, 210, 15, Math.PI * 0.8, Math.PI * 1.4);
+      ctx.stroke();
+
+      // Bubbles
+      ctx.beginPath(); ctx.arc(370, 150, 12, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.arc(400, 120, 8, 0, Math.PI * 2); ctx.stroke();
+    }
+  },
+  {
+    id: "rocket",
+    name: "Space Rocket Toy",
+    icon: "🚀",
+    draw: (ctx, w, h) => {
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, w, h);
+      ctx.strokeStyle = "#44403c";
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+      ctx.lineJoin = "round";
+
+      // Rocket body cone top + cylinder
+      ctx.beginPath();
+      ctx.moveTo(250, 80); // Tip
+      ctx.bezierCurveTo(210, 120, 210, 160, 210, 260); // Left side
+      ctx.lineTo(290, 260); // Bottom base
+      ctx.bezierCurveTo(290, 160, 290, 120, 250, 80); // Right side
+      ctx.stroke();
+
+      // Left wing
+      ctx.beginPath();
+      ctx.moveTo(210, 220);
+      ctx.lineTo(160, 270);
+      ctx.lineTo(210, 270);
+      ctx.stroke();
+
+      // Right wing
+      ctx.beginPath();
+      ctx.moveTo(290, 220);
+      ctx.lineTo(340, 270);
+      ctx.lineTo(290, 270);
+      ctx.stroke();
+
+      // Round cabin window
+      ctx.beginPath();
+      ctx.arc(250, 170, 20, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Fire booster flames
+      ctx.beginPath();
+      ctx.moveTo(230, 265);
+      ctx.lineTo(210, 310);
+      ctx.lineTo(250, 290);
+      ctx.lineTo(290, 310);
+      ctx.lineTo(270, 265);
+      ctx.stroke();
+    }
   }
 ];
 
@@ -281,6 +621,19 @@ export default function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedProductCategory, setSelectedProductCategory] = useState<string>("all");
 
+  // CUSTOM STATES FOR USER-SPECIFIED EXPERIENCES
+  const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
+  const [kidsActiveGame, setKidsActiveGame] = useState<"paint" | "bubble" | "scratch">("paint");
+  const [checkoutOpen, setCheckoutOpen] = useState(false);
+
+  // CHECKOUT & SHIPPING DETAIL STATES
+  const [shippingName, setShippingName] = useState("");
+  const [shippingPhone, setShippingPhone] = useState("");
+  const [shippingCity, setShippingCity] = useState("");
+  const [shippingArea, setShippingArea] = useState("");
+  const [shippingHouse, setShippingHouse] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState<"easypaisa" | "jazzcash">("easypaisa");
+
   // TOAST NOTIFICATIONS STATE
   const [toast, setToast] = useState<{ message: string; sub: string } | null>(null);
 
@@ -289,6 +642,109 @@ export default function App() {
     setTimeout(() => {
       setToast(null);
     }, 3500);
+  };
+
+  // Reusable Product Card renderer that EXACTLY matches the screenshot's layout and styling
+  const renderProductCard = (product: Product) => {
+    return (
+      <div 
+        key={product.id} 
+        className="bg-white border border-stone-200/80 rounded-[28px] overflow-hidden hover:shadow-lg transition-all duration-300 flex flex-col justify-between h-full"
+      >
+        <div>
+          {/* 1. Image Banner Block */}
+          {product.hasBannerImage ? (
+            <div className="p-3 pb-0 select-none relative">
+              <div className="relative rounded-[20px] overflow-hidden h-52 w-full bg-stone-100 flex items-center justify-center">
+                {renderProductImage(product.image, "w-full h-full object-cover")}
+                
+                {/* Age badge (top-left) */}
+                {product.ageBadge && (
+                  <div className="absolute top-3 left-3 bg-[#fffdf9]/95 text-stone-700 border border-stone-200/50 shadow-xs text-[11px] font-extrabold px-3 py-1 rounded-full flex items-center gap-1 z-10">
+                    {product.ageBadge}
+                  </div>
+                )}
+
+                {/* Top-right badge */}
+                {product.topRightBadge && (
+                  <div className="absolute top-3 right-3 bg-pink-500 text-white text-[11px] font-black uppercase tracking-wider px-3 py-1 rounded-full shadow-xs z-10">
+                    {product.topRightBadge}
+                  </div>
+                )}
+
+                {/* Bottom banner text overlay */}
+                {product.bannerText && (
+                  <div className="absolute bottom-0 left-0 right-0 bg-[#3a3530]/85 backdrop-blur-xs py-2 px-4 text-center">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-white select-none">
+                      {product.bannerText}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+          ) : null}
+
+          {/* 2. Text Content Block */}
+          <div className="p-6 pb-4 space-y-4">
+            {/* Rating + Category line */}
+            <div className="flex items-center gap-1.5 text-xs text-stone-500 font-bold select-none">
+              <span className="text-amber-400 text-sm">★</span>
+              <span className="text-stone-700 font-extrabold">{product.ratingValue || product.stars.toFixed(1)}</span>
+              <span className="text-stone-300">•</span>
+              <span className="uppercase tracking-widest text-[10px] text-stone-400 font-black">
+                {product.ratingLabel || "PAINT KITS"}
+              </span>
+            </div>
+
+            {/* Title & Description block */}
+            <div className="space-y-1.5 cursor-pointer" onClick={() => setSelectedProductForDetail(product)}>
+              <h4 className="text-base font-black text-stone-900 leading-tight hover:text-pink-500 transition-colors flex items-center gap-1.5">
+                <span>{product.name}</span>
+                {/* Fallback to small inline emoji if no banner image */}
+                {!product.hasBannerImage && <span className="text-lg">{product.image}</span>}
+              </h4>
+              <p className="text-xs text-stone-500 font-semibold leading-relaxed line-clamp-3">
+                {product.description}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. Bottom Price & Action Block (always aligned at the bottom) */}
+        <div className="px-6 pb-6 pt-2 flex items-end justify-between">
+          {/* Price block */}
+          <div className="flex flex-col">
+            <span className="text-[9px] font-extrabold text-stone-400 tracking-wider uppercase leading-none select-none mb-1">
+              PRICE
+            </span>
+            <span className="text-lg font-black text-pink-600 leading-none">
+              Rs. {product.price}
+            </span>
+          </div>
+
+          {/* Buttons block */}
+          <div className="flex items-center gap-1.5">
+            {/* Details Button */}
+            <button
+              onClick={() => setSelectedProductForDetail(product)}
+              className="border border-pink-200 bg-pink-50/50 hover:bg-pink-50 text-pink-600 text-xs font-black px-3 py-2 rounded-full flex items-center gap-1 transition-all"
+            >
+              <span>ⓘ</span>
+              <span>Details / تفصیلات</span>
+            </button>
+
+            {/* Buy Button */}
+            <button
+              onClick={() => handleAddToCart(product)}
+              className="bg-[#111e47] hover:bg-[#0c1634] text-white text-xs font-bold px-3.5 py-2 rounded-full flex items-center gap-1 transition-all"
+            >
+              <span>🛒</span>
+              <span>Buy / خریدیں</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   // --- 1. HERO PAGE INTERACTIVE MINI-BOARD SKETCHING ---
@@ -790,30 +1246,68 @@ export default function App() {
   };
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
   };
 
   // Compile items to send a direct WhatsApp Order message
   const handleCheckoutWhatsApp = () => {
     if (cart.length === 0) return;
-    
-    let text = "Hi *Mini Paint Station*! 🎨✨\n\nI would like to place an order for the following creative kids kits:\n\n";
+    setCheckoutOpen(true);
+  };
+
+  const handleConfirmOrder = () => {
+    if (!shippingName || !shippingPhone || !shippingCity || !shippingArea || !shippingHouse) {
+      triggerToast("Missing Details", "Please fill in all checkout form details.");
+      return;
+    }
+
+    const subtotal = getCartTotal();
+    const delivery = 200;
+    const grandTotal = subtotal + delivery;
+    const advance = Math.round(subtotal * 0.5);
+    const onDelivery = grandTotal - advance;
+
+    let text = `*🆕 NEW ORDER FROM MINI PAINT STATION* 🎨📦\n\n`;
+    text += `*👤 Customer Details:*\n`;
+    text += `• *Name:* ${shippingName}\n`;
+    text += `• *Phone Number:* ${shippingPhone}\n`;
+    text += `• *City:* ${shippingCity}\n`;
+    text += `• *Area/Bazaar:* ${shippingArea}\n`;
+    text += `• *House / Street Number:* ${shippingHouse}\n\n`;
+
+    text += `*💳 Payment Method Chosen:*\n`;
+    text += `• *Advance Payment Method:* ${paymentMethod === "easypaisa" ? "EasyPaisa" : "JazzCash"}\n`;
+    text += `• *Advance Paid (50%):* Rs. ${advance}\n`;
+    text += `• *Account Name:* Muhammad Ahmad\n`;
+    text += `• *Account Number:* 03156950134\n\n`;
+
+    text += `*🛒 Ordered Items:*\n`;
     cart.forEach((item, idx) => {
-      text += `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}\n`;
+      text += `${idx + 1}. *${item.name}* (Qty: ${item.quantity}) - Rs. ${item.price * item.quantity}\n`;
     });
-    text += `\n*Grand Total:* $${getCartTotal()}\n\n`;
-    text += "Please contact me to confirm my shipping address and delivery details! Thank you! ❤️";
+    text += `\n`;
+
+    text += `*💰 Pricing Breakdown:*\n`;
+    text += `• Subtotal: Rs. ${subtotal}\n`;
+    text += `• Delivery Charges: Rs. ${delivery}\n`;
+    text += `• Grand Total: Rs. ${grandTotal}\n`;
+    text += `----------------------------\n`;
+    text += `• *⭐ 50% Advance (Required): Rs. ${advance}*\n`;
+    text += `• *🚚 Cash on Delivery (CoD): Rs. ${onDelivery}*\n\n`;
+    text += `Please process and confirm my order! Thank you. ❤️`;
 
     const encoded = encodeURIComponent(text);
-    const whatsappUrl = `https://wa.me/923000000000?text=${encoded}`; // Change or direct to dynamic local wa support
+    const whatsappUrl = `https://wa.me/923156950134?text=${encoded}`;
     window.open(whatsappUrl, "_blank");
-    triggerToast("WhatsApp Redirect! 💬", "Sending order details to Mini Paint Station support.");
+    triggerToast("Inquiry Created! 💬", "Opening WhatsApp to submit order.");
+    setCheckoutOpen(false);
+    setCartOpen(false);
   };
 
   // Direct contact message link
   const triggerWhatsAppQuery = (msg: string) => {
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/923000000000?text=${encoded}`, "_blank");
+    window.open(`https://wa.me/923156950134?text=${encoded}`, "_blank");
   };
 
 
@@ -966,12 +1460,12 @@ export default function App() {
                   {cart.map((item) => (
                     <div key={item.id} className="flex items-center justify-between bg-stone-50 border border-stone-200/50 p-3 rounded-2xl">
                       <div className="flex items-center gap-3">
-                        <span className="text-2xl bg-white w-10 h-10 rounded-xl flex items-center justify-center border border-stone-200/30">
-                          {item.image}
+                        <span className="bg-white w-10 h-10 rounded-xl flex items-center justify-center border border-stone-200/30 overflow-hidden">
+                          {renderProductImage(item.image, "w-full h-full object-contain p-1", "text-xl")}
                         </span>
                         <div>
                           <h5 className="text-xs font-bold text-stone-900 leading-snug">{item.name}</h5>
-                          <span className="text-[11px] font-extrabold text-pink-500">${item.price}</span>
+                          <span className="text-[11px] font-extrabold text-pink-500">Rs. {item.price}</span>
                         </div>
                       </div>
 
@@ -1001,11 +1495,11 @@ export default function App() {
               <div className="border-t border-stone-100 pt-5 space-y-4">
                 <div className="flex items-center justify-between text-sm font-bold text-stone-900">
                   <span>Cart Total:</span>
-                  <span className="text-pink-600 text-lg">${getCartTotal()}</span>
+                  <span className="text-pink-600 text-lg">Rs. {getCartTotal()}</span>
                 </div>
                 
                 <p className="text-[10px] text-stone-400 leading-relaxed bg-stone-50 p-2.5 rounded-xl border border-stone-150">
-                  🚀 orders are compiled into details and direct checked out via WhatsApp with our representative instantly. Safe, fast, and secure.
+                  🚀 Order safely via WhatsApp with 50% advance payment via EasyPaisa/JazzCash and 50% on Delivery! Standard shipping across Sahiwal & nationwide is Rs. 200.
                 </p>
 
                 <div className="grid grid-cols-2 gap-3">
@@ -1017,7 +1511,7 @@ export default function App() {
                   </button>
                   <button 
                     onClick={handleCheckoutWhatsApp}
-                    className="w-full bg-[#111e47] hover:bg-[#0c1634] text-white font-bold py-3.5 rounded-2xl text-xs flex items-center justify-center gap-2 transition-all shadow-lg"
+                    className="w-full bg-[#111e47] hover:bg-[#0c1634] text-white font-bold py-3.5 rounded-2xl text-xs flex items-center justify-center gap-2 transition-all shadow-lg animate-pulse"
                   >
                     Checkout (WA)
                     <ArrowRight className="w-4 h-4" />
@@ -1025,6 +1519,332 @@ export default function App() {
                 </div>
               </div>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* --- PRODUCT DETAIL MODAL --- */}
+      {selectedProductForDetail && (() => {
+        const detail = getProductDetails(selectedProductForDetail.id);
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Overlay */}
+            <div 
+              className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity animate-fade-in" 
+              onClick={() => setSelectedProductForDetail(null)} 
+            />
+            
+            {/* Modal Box */}
+            <div className="relative bg-[#fdfbf7] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row z-10 border border-stone-200 animate-scale-up">
+              
+              {/* Close Button ("X" - cros ka nishan) */}
+              <button 
+                onClick={() => setSelectedProductForDetail(null)} 
+                className="absolute top-4 right-4 z-20 bg-white hover:bg-stone-100 p-2 rounded-full border border-stone-200 text-stone-600 transition-colors shadow-sm cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Left Column (Big Emoji Illustration) */}
+              <div className="md:w-1/2 bg-stone-50 border-r border-stone-200/60 flex items-center justify-center p-8 select-none relative min-h-[220px] overflow-hidden">
+                {selectedProductForDetail.badge && (
+                  <span className="absolute top-4 left-4 bg-pink-500 text-white text-[10px] font-black uppercase tracking-wider px-3 py-1 rounded-full z-10">
+                    {selectedProductForDetail.badge}
+                  </span>
+                )}
+                {renderProductImage(selectedProductForDetail.image, "w-full h-full max-h-[300px] object-contain p-2", "text-8xl filter drop-shadow-md")}
+              </div>
+
+              {/* Right Column (Details + Action) */}
+              <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
+                      {selectedProductForDetail.category === "plaster" ? "Painting Kit" : selectedProductForDetail.category.toUpperCase()}
+                    </span>
+                    <h3 className="text-xl font-black text-[#111e47] leading-tight">
+                      {selectedProductForDetail.name}
+                    </h3>
+                    <div className="flex items-center gap-1.5 mt-1 text-sm font-black text-pink-600">
+                      Rs. {selectedProductForDetail.price}
+                    </div>
+                  </div>
+
+                  {detail.shortHeading && (
+                    <p className="text-xs font-black text-stone-700 leading-snug">
+                      {detail.shortHeading}
+                    </p>
+                  )}
+
+                  {/* Included Items List */}
+                  {detail.included && detail.included.length > 0 && (
+                    <div className="space-y-1.5">
+                      <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
+                        What's Included:
+                      </h4>
+                      <ul className="space-y-1">
+                        {detail.included.map((inc, i) => (
+                          <li key={i} className="text-xs text-stone-700 font-extrabold flex items-center gap-1.5">
+                            <span className="text-emerald-500">✅</span> {inc}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-stone-500 leading-relaxed font-semibold">
+                    {detail.desc}
+                  </p>
+
+                  {detail.whatsapp && (
+                    <div className="text-xs text-stone-800 font-extrabold flex items-center gap-1.5 bg-stone-50 p-2.5 rounded-xl border border-stone-150">
+                      <span>📱</span>
+                      <span>WhatsApp: <a href={`https://wa.me/92${detail.whatsapp.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer" className="text-pink-600 hover:underline">{detail.whatsapp}</a></span>
+                    </div>
+                  )}
+
+                  {detail.mixedNote && (
+                    <p className="text-[10px] text-stone-400 font-bold leading-relaxed">
+                      {detail.mixedNote}
+                    </p>
+                  )}
+
+                  {/* Product Notes / Delivery */}
+                  {detail.notes && detail.notes.length > 0 && !detail.mixedNote && (
+                    <div className="space-y-1 bg-stone-50 p-3 rounded-2xl border border-stone-200/50">
+                      <h4 className="text-[9px] font-black uppercase text-stone-400 tracking-wider">
+                        Important Notes:
+                      </h4>
+                      <ul className="space-y-0.5">
+                        {detail.notes.map((note, i) => (
+                          <li key={i} className="text-[10px] text-stone-500 font-bold leading-relaxed list-disc list-inside">
+                            {note}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+
+                {/* Bottom Actions */}
+                <div className="flex items-center justify-between border-t border-stone-100 pt-4 mt-2">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] text-stone-400 font-bold">Total Price</span>
+                    <span className="text-lg font-black text-pink-600">Rs. {selectedProductForDetail.price}</span>
+                  </div>
+                  <button 
+                    onClick={() => {
+                      handleAddToCart(selectedProductForDetail);
+                      setSelectedProductForDetail(null);
+                    }}
+                    className="bg-[#111e47] hover:bg-[#0c1634] text-white font-black text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-lg shadow-blue-900/10 transition-all cursor-pointer"
+                  >
+                    <span>Add to Bag</span>
+                    <ShoppingBag className="w-4 h-4" />
+                  </button>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
+
+      {/* --- CHECKOUT FORM DETAILS MODAL --- */}
+      {checkoutOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Overlay */}
+          <div 
+            className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity animate-fade-in" 
+            onClick={() => setCheckoutOpen(false)} 
+          />
+          
+          {/* Modal Container */}
+          <div className="relative bg-[#fdfbf7] w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-stone-200 z-10 animate-scale-up max-h-[90vh] flex flex-col">
+            
+            {/* Header */}
+            <div className="p-5 border-b border-stone-200/60 bg-white flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ShoppingBag className="w-5 h-5 text-pink-500" />
+                <h3 className="text-base font-black text-stone-900">Checkout Shipping Details</h3>
+              </div>
+              <button 
+                onClick={() => setCheckoutOpen(false)} 
+                className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-400 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Scrollable Form Body */}
+            <div className="p-6 overflow-y-auto space-y-5 flex-1">
+              <p className="text-[11px] text-stone-600 font-bold leading-relaxed bg-amber-50 border border-amber-150 p-3.5 rounded-2xl">
+                ⚠️ **Advance Payment Policy:** As per our business terms, we request **50% payment in advance** via EasyPaisa or JazzCash, and the remaining **50% + Rs. 200 delivery charges** on delivery!
+              </p>
+
+              {/* Step 1: Customer details */}
+              <div className="space-y-3.5">
+                <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
+                  1. Shipping Information
+                </h4>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Your Full Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={shippingName}
+                    onChange={(e) => setShippingName(e.target.value)}
+                    placeholder="e.g. Muhammad Ahmad"
+                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Phone Number (Active WhatsApp)</label>
+                  <input
+                    type="text"
+                    required
+                    value={shippingPhone}
+                    onChange={(e) => setShippingPhone(e.target.value)}
+                    placeholder="e.g. 03156950134"
+                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-stone-400 uppercase block">City Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={shippingCity}
+                    onChange={(e) => setShippingCity(e.target.value)}
+                    placeholder="e.g. Sahiwal"
+                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Area / Bazaar / Landmark / Street Name</label>
+                  <input
+                    type="text"
+                    required
+                    value={shippingArea}
+                    onChange={(e) => setShippingArea(e.target.value)}
+                    placeholder="e.g. Saddar Bazaar, near Main Market"
+                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <label className="text-[10px] font-bold text-stone-400 uppercase block">House Address / House Number</label>
+                  <input
+                    type="text"
+                    required
+                    value={shippingHouse}
+                    onChange={(e) => setShippingHouse(e.target.value)}
+                    placeholder="e.g. House # 12, Block-C"
+                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                  />
+                </div>
+              </div>
+
+              {/* Step 2: Payment options */}
+              <div className="space-y-3.5 pt-2 border-t border-stone-200/60">
+                <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
+                  2. Choose Advance Payment Option
+                </h4>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <label className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                    paymentMethod === "easypaisa" ? "border-pink-500 bg-pink-50/10" : "border-stone-200 hover:bg-stone-50"
+                  }`}>
+                    <input 
+                      type="radio" 
+                      name="payment-method" 
+                      className="hidden" 
+                      checked={paymentMethod === "easypaisa"}
+                      onChange={() => setPaymentMethod("easypaisa")}
+                    />
+                    <span className="text-xs font-black text-stone-900">🟢 EasyPaisa</span>
+                    <span className="text-[9px] text-stone-400 font-bold mt-1">Muhammad Ahmad</span>
+                  </label>
+
+                  <label className={`flex flex-col items-center justify-center p-3.5 rounded-2xl border-2 cursor-pointer transition-all ${
+                    paymentMethod === "jazzcash" ? "border-pink-500 bg-pink-50/10" : "border-stone-200 hover:bg-stone-50"
+                  }`}>
+                    <input 
+                      type="radio" 
+                      name="payment-method" 
+                      className="hidden" 
+                      checked={paymentMethod === "jazzcash"}
+                      onChange={() => setPaymentMethod("jazzcash")}
+                    />
+                    <span className="text-xs font-black text-stone-900">🔴 JazzCash</span>
+                    <span className="text-[9px] text-stone-400 font-bold mt-1">Muhammad Ahmad</span>
+                  </label>
+                </div>
+
+                {/* Account Details Box */}
+                <div className="bg-stone-100 border border-stone-200 rounded-2xl p-4 space-y-1">
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-stone-500">Account Name:</span>
+                    <span className="font-black text-stone-900">Muhammad Ahmad</span>
+                  </div>
+                  <div className="flex justify-between items-center text-xs">
+                    <span className="font-bold text-stone-500">Account / Phone:</span>
+                    <span className="font-black text-pink-600 tracking-wider">0315-6950134</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Step 3: Mathematical Pricing details */}
+              <div className="pt-4 border-t border-stone-200/60 space-y-2">
+                <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
+                  3. Calculation Summary (PKR)
+                </h4>
+
+                <div className="space-y-1.5 text-xs font-semibold text-stone-700 bg-stone-50 p-3.5 rounded-2xl border border-stone-200/50">
+                  <div className="flex justify-between text-stone-600">
+                    <span>Items Subtotal:</span>
+                    <span>Rs. {getCartTotal()}</span>
+                  </div>
+                  <div className="flex justify-between text-stone-600">
+                    <span>Delivery Charges:</span>
+                    <span>Rs. 200</span>
+                  </div>
+                  <div className="flex justify-between text-stone-900 font-black pt-1 border-t border-stone-200 border-dashed">
+                    <span>Grand Total:</span>
+                    <span>Rs. {getCartTotal() + 200}</span>
+                  </div>
+                  
+                  <div className="pt-2 mt-2 border-t border-stone-200 flex flex-col gap-1">
+                    <div className="flex justify-between items-center bg-pink-50 p-2 rounded-xl text-pink-700 font-black">
+                      <span className="flex items-center gap-1">⭐ 50% Advance Required:</span>
+                      <span>Rs. {Math.round(getCartTotal() * 0.5)}</span>
+                    </div>
+                    <div className="flex justify-between items-center bg-green-50 p-2 rounded-xl text-green-700 font-black">
+                      <span className="flex items-center gap-1">🚚 Remaining On Delivery:</span>
+                      <span>Rs. {getCartTotal() + 200 - Math.round(getCartTotal() * 0.5)}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Footer submit button */}
+            <div className="p-5.5 border-t border-stone-200/60 bg-white">
+              <button
+                onClick={handleConfirmOrder}
+                className="w-full bg-[#111e47] hover:bg-[#0c1634] active:scale-95 text-white font-black text-xs py-4 rounded-2xl tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-blue-900/10 cursor-pointer"
+              >
+                <MessageSquare className="w-4 h-4" />
+                <span>Confirm & Send Order on WhatsApp</span>
+              </button>
+            </div>
+
           </div>
         </div>
       )}
@@ -1283,42 +2103,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PRODUCTS.slice(0, 3).map((product) => (
-                  <div key={product.id} className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-                    <div className="p-5 space-y-4">
-                      {/* Product Thumbnail block */}
-                      <div className="bg-stone-50 border border-stone-100 rounded-2xl h-44 flex items-center justify-center text-6xl relative select-none">
-                        {product.badge && (
-                          <span className="absolute top-3 left-3 bg-pink-500 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full">
-                            {product.badge}
-                          </span>
-                        )}
-                        {product.image}
-                      </div>
-
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-1 text-amber-400">
-                          {Array.from({ length: product.stars }).map((_, i) => (
-                            <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                          ))}
-                        </div>
-                        <h4 className="text-sm font-black text-stone-900 leading-tight">{product.name}</h4>
-                        <p className="text-xs text-stone-400 font-medium leading-relaxed">{product.description}</p>
-                      </div>
-                    </div>
-
-                    <div className="bg-stone-50/50 border-t border-stone-100 px-5 py-3 flex items-center justify-between">
-                      <span className="text-base font-black text-pink-600">${product.price}</span>
-                      <button 
-                        onClick={() => handleAddToCart(product)}
-                        className="bg-[#111e47] hover:bg-[#0c1634] text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center gap-1.5 transition-all"
-                      >
-                        <span>Add To Bag</span>
-                        <ShoppingBag className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                {PRODUCTS.slice(0, 6).map((product) => renderProductCard(product))}
               </div>
             </div>
 
@@ -1379,42 +2164,7 @@ export default function App() {
 
             {/* Catalog Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {PRODUCTS.filter(p => selectedProductCategory === "all" || p.category === selectedProductCategory).map((product) => (
-                <div key={product.id} className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between">
-                  <div className="p-5 space-y-4">
-                    {/* Thumbnail */}
-                    <div className="bg-stone-50 border border-stone-100 rounded-2xl h-48 flex items-center justify-center text-6xl relative select-none">
-                      {product.badge && (
-                        <span className="absolute top-3 left-3 bg-pink-500 text-white text-[9px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full">
-                          {product.badge}
-                        </span>
-                      )}
-                      {product.image}
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-1 text-amber-400">
-                        {Array.from({ length: product.stars }).map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                        ))}
-                      </div>
-                      <h4 className="text-sm font-black text-stone-900 leading-tight">{product.name}</h4>
-                      <p className="text-xs text-stone-400 font-medium leading-relaxed">{product.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="bg-stone-50/50 border-t border-stone-100 px-5 py-4 flex items-center justify-between">
-                    <span className="text-base font-black text-pink-600">${product.price}</span>
-                    <button 
-                      onClick={() => handleAddToCart(product)}
-                      className="bg-[#111e47] hover:bg-[#0c1634] text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center gap-1.5 transition-all shadow-sm"
-                    >
-                      <span>Add To Bag</span>
-                      <ShoppingBag className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              ))}
+              {PRODUCTS.filter(p => selectedProductCategory === "all" || p.category === selectedProductCategory).map((product) => renderProductCard(product))}
             </div>
           </div>
         )}
@@ -1987,7 +2737,7 @@ export default function App() {
                       <Phone className="w-5 h-5 text-pink-400 mt-0.5" />
                       <div>
                         <span className="block text-[11px] text-stone-300 font-bold uppercase">Direct Support</span>
-                        <span className="text-xs font-extrabold text-white">+92 (300) 000-0000</span>
+                        <span className="text-xs font-extrabold text-white">Muhammad Ahmad (+92 315-6950134)</span>
                       </div>
                     </div>
 
@@ -1995,7 +2745,7 @@ export default function App() {
                       <Mail className="w-5 h-5 text-pink-400 mt-0.5" />
                       <div>
                         <span className="block text-[11px] text-stone-300 font-bold uppercase">Email Inquiry</span>
-                        <span className="text-xs font-extrabold text-white">support@minipaintstation.com</span>
+                        <span className="text-xs font-extrabold text-white">info@minipaintstation.com</span>
                       </div>
                     </div>
 
@@ -2003,7 +2753,7 @@ export default function App() {
                       <MapPin className="w-5 h-5 text-pink-400 mt-0.5" />
                       <div>
                         <span className="block text-[11px] text-stone-300 font-bold uppercase">Main Studio Address</span>
-                        <span className="text-xs font-extrabold text-white">Mini Paint Station HQ, Main Boulevard, Lahore, Pakistan</span>
+                        <span className="text-xs font-extrabold text-white">Mini Paint Station, Sahiwal City, Punjab, Pakistan</span>
                       </div>
                     </div>
                   </div>
