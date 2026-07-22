@@ -1,6 +1,6 @@
 {
-  "name": "Vite Express Hostinger Setup",
-  "description": "A React and Vite SPA configured with an Express server in the root for seamless deployment to Hostinger, Caprover, or other Node environments.",
+  "name": "Mini Paint Station",
+  "description": "Kids painting kits, premium 3D plaster figures, customized splinter-free wooden stencils, and washable organic paints. High-fidelity creative store.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
