@@ -136,11 +136,11 @@ const PRODUCTS: Product[] = [
   },
   {
     id: "prod-medium-kit",
-    name: "Medium Painting Kit",
+    name: "Medium Painting Kit 🎨",
     description: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination.",
     price: 299,
     category: "plaster",
-    image: "/src/assets/images/medium_paint_kit_1784717482944.jpg",
+    image: "/src/assets/images/medium_paint_kit_pack_1784787370296.jpg",
     stars: 5,
     ratingValue: 4.9,
     ratingLabel: "PAINT KITS",
@@ -253,7 +253,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "Medium Painting Kit 🎨",
         price: 299,
-        image: "/src/assets/images/medium_paint_kit_1784717482944.jpg",
+        image: "/src/assets/images/medium_paint_kit_pack_1784787370296.jpg",
         shortHeading: "Medium Paint & Play Kit 🎨",
         desc: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination. Perfect for birthdays, gifts, family activities, classrooms, and screen-free fun.",
         included: [
