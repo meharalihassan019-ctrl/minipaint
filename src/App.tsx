@@ -18,6 +18,7 @@ import {
   Palette, 
   X, 
   Sparkles, 
+  AlertTriangle, 
   ShoppingBag, 
   MessageSquare, 
   ArrowRight, 
@@ -49,6 +50,9 @@ import extraPaintStripImg from "./assets/images/extra_paint_strip_1784717529660.
 import largePaintKitImg from "./assets/images/large_paint_kit_1784717515804.jpg";
 import smallPaintKitImg from "./assets/images/small_paint_kit_1784717498828.jpg";
 import bigCeramicToyImg from "./assets/images/big_ceramic_toy_15_1784789245573.jpg";
+
+// --- ADMIN DASHBOARD INTEGRATION ---
+import AdminDashboard, { ProductItem } from "./components/AdminDashboard";
 
 // --- TYPES ---
 type Tab = "home" | "products" | "studio" | "stencil" | "resources" | "contact";
@@ -294,7 +298,7 @@ function getProductDetails(id: string): RichProductDetail {
           "1 Small Ceramic Toy Figurine",
           "Smooth Edges & Dust Free"
         ],
-        whatsapp: "0315-6950134",
+        whatsapp: "0310-6541965",
         notes: [
           "Crafted from safe, non-toxic plaster material.",
           "Available in various cute designs (star, car, mini figures)."
@@ -313,7 +317,7 @@ function getProductDetails(id: string): RichProductDetail {
           "6 Vibrant Paint Colours",
           "1 Paint Brush"
         ],
-        whatsapp: "0315-6950134",
+        whatsapp: "0310-6541965",
         notes: [
           "All ceramic items are carefully molded with safe, smooth edges.",
           "Non-toxic, ultra-washable kids paint strip included."
@@ -332,7 +336,7 @@ function getProductDetails(id: string): RichProductDetail {
           "3 Paint Colours",
           "1 Paint Brush"
         ],
-        whatsapp: "0315-6950134",
+        whatsapp: "0310-6541965",
         mixedNote: "Mixed toy assortment included. Contact us before ordering if you have specific toy preferences.",
         notes: [
           "Compact starter set, ideal for children aged 3+.",
@@ -381,7 +385,7 @@ function getProductDetails(id: string): RichProductDetail {
         included: [
           "1 Fine Detail Painting Brush"
         ],
-        whatsapp: "0315-6950134",
+        whatsapp: "0310-6541965",
         notes: [
           "Lightweight durable handle tailored for children's hands.",
           "Perfect as a replacement or extra brush for creative fun."
@@ -413,7 +417,7 @@ function getProductDetails(id: string): RichProductDetail {
           "1 Large Ceramic Toy Figurine",
           "Smooth Edges & Dust-Free Finish"
         ],
-        whatsapp: "0315-6950134",
+        whatsapp: "0310-6541965",
         notes: [
           "Carefully packaged to prevent chipping.",
           "Designs include teddy bear with balloons, burger, donut and more."
@@ -676,6 +680,60 @@ export default function App() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedProductCategory, setSelectedProductCategory] = useState<string>("all");
 
+  // ADMIN DASHBOARD & DYNAMIC STORE STATES
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
+  const [storePhone, setStorePhone] = useState("0310-6541965");
+  const [announcementText, setAnnouncementText] = useState("🎉 Free Paint Brush on orders above Rs. 1000!");
+  const [footerSecretClicks, setFooterSecretClicks] = useState(0);
+
+  // Secret shortcut & URL trigger to access admin (#admin or Ctrl+Shift+A)
+  useEffect(() => {
+    const checkAdminTrigger = () => {
+      if (window.location.hash === "#admin" || window.location.search.includes("admin")) {
+        setIsAdminOpen(true);
+      }
+    };
+    checkAdminTrigger();
+    window.addEventListener("hashchange", checkAdminTrigger);
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "A" || e.key === "a")) {
+        e.preventDefault();
+        setIsAdminOpen(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("hashchange", checkAdminTrigger);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+  
+  // DYNAMIC PRODUCTS LIST STATE
+  const [productList, setProductList] = useState<Product[]>(() => {
+    const saved = localStorage.getItem("mini_paint_products_v2");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {
+        /* fallback to default */
+      }
+    }
+    return PRODUCTS;
+  });
+
+  // Persist updated product list when changed in Admin Dashboard
+  const handleUpdateProducts = (updatedProducts: ProductItem[]) => {
+    setProductList(updatedProducts as Product[]);
+    try {
+      localStorage.setItem("mini_paint_products_v2", JSON.stringify(updatedProducts));
+    } catch (e) {
+      console.error("Failed to save products to localStorage", e);
+    }
+  };
+
   // CUSTOM STATES FOR USER-SPECIFIED EXPERIENCES
   const [selectedProductForDetail, setSelectedProductForDetail] = useState<Product | null>(null);
   const [kidsActiveGame, setKidsActiveGame] = useState<"paint" | "bubble" | "scratch">("paint");
@@ -688,6 +746,7 @@ export default function App() {
   const [shippingArea, setShippingArea] = useState("");
   const [shippingHouse, setShippingHouse] = useState("");
   const [paymentMethod, setPaymentMethod] = useState<"easypaisa" | "jazzcash">("easypaisa");
+  const [formErrors, setFormErrors] = useState<{ [key: string]: string }>({});
 
   // TOAST NOTIFICATIONS STATE
   const [toast, setToast] = useState<{ message: string; sub: string } | null>(null);
@@ -1311,10 +1370,40 @@ export default function App() {
   };
 
   const handleConfirmOrder = () => {
-    if (!shippingName || !shippingPhone || !shippingCity || !shippingArea || !shippingHouse) {
-      triggerToast("Missing Details", "Please fill in all checkout form details.");
+    const errors: { [key: string]: string } = {};
+    const name = shippingName.trim();
+    const phone = shippingPhone.trim();
+    const city = shippingCity.trim();
+    const area = shippingArea.trim();
+    const house = shippingHouse.trim();
+
+    if (!name) {
+      errors.name = "Aap ka poora naam likhna zaroori hai! (Full Name Required)";
+    }
+    if (!phone) {
+      errors.phone = "Active WhatsApp mobile number likhna zaroori hai!";
+    } else {
+      const digits = phone.replace(/[^0-9]/g, "");
+      if (digits.length < 10 || digits.length > 12) {
+        errors.phone = "Sahi 11-digit WhatsApp/mobile number likhain (e.g. 03106541965)";
+      }
+    }
+    if (!city) {
+      errors.city = "City (Shehar) ka naam likhna zaroori hai!";
+    }
+    if (!area) {
+      errors.area = "Area / Bazaar / Landmark ka naam likhna zaroori hai!";
+    }
+    if (!house) {
+      errors.house = "Makaan / Street / Address detail likhna zaroori hai!";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      triggerToast("Pori Maaloomaat Zaroori Hain! ⚠️", "Meharbani karke laal (Red) fields ko sahi tarah pur karain.");
       return;
     }
+    setFormErrors({});
 
     const subtotal = getCartTotal();
     const delivery = 200;
@@ -1324,17 +1413,17 @@ export default function App() {
 
     let text = `*🆕 NEW ORDER FROM MINI PAINT STATION* 🎨📦\n\n`;
     text += `*👤 Customer Details:*\n`;
-    text += `• *Name:* ${shippingName}\n`;
-    text += `• *Phone Number:* ${shippingPhone}\n`;
-    text += `• *City:* ${shippingCity}\n`;
-    text += `• *Area/Bazaar:* ${shippingArea}\n`;
-    text += `• *House / Street Number:* ${shippingHouse}\n\n`;
+    text += `• *Name:* ${name}\n`;
+    text += `• *Phone Number:* ${phone}\n`;
+    text += `• *City:* ${city}\n`;
+    text += `• *Area/Bazaar:* ${area}\n`;
+    text += `• *House / Street Number:* ${house}\n\n`;
 
     text += `*💳 Payment Method Chosen:*\n`;
     text += `• *Advance Payment Method:* ${paymentMethod === "easypaisa" ? "EasyPaisa" : "JazzCash"}\n`;
     text += `• *Advance Paid (50%):* Rs. ${advance}\n`;
     text += `• *Account Name:* Muhammad Ahmad\n`;
-    text += `• *Account Number:* 03156950134\n\n`;
+    text += `• *Account Number:* ${storePhone}\n\n`;
 
     text += `*🛒 Ordered Items:*\n`;
     cart.forEach((item, idx) => {
@@ -1351,8 +1440,10 @@ export default function App() {
     text += `• *🚚 Cash on Delivery (CoD): Rs. ${onDelivery}*\n\n`;
     text += `Please process and confirm my order! Thank you. ❤️`;
 
+    const cleanDigits = storePhone.replace(/[^0-9]/g, "").replace(/^0+/, "");
+    const waNumber = cleanDigits ? (cleanDigits.startsWith("92") ? cleanDigits : `92${cleanDigits}`) : "923106541965";
     const encoded = encodeURIComponent(text);
-    const whatsappUrl = `https://wa.me/923156950134?text=${encoded}`;
+    const whatsappUrl = `https://wa.me/${waNumber}?text=${encoded}`;
     window.open(whatsappUrl, "_blank");
     triggerToast("Inquiry Created! 💬", "Opening WhatsApp to submit order.");
     setCheckoutOpen(false);
@@ -1361,8 +1452,10 @@ export default function App() {
 
   // Direct contact message link
   const triggerWhatsAppQuery = (msg: string) => {
+    const cleanDigits = storePhone.replace(/[^0-9]/g, "").replace(/^0+/, "");
+    const waNumber = cleanDigits ? (cleanDigits.startsWith("92") ? cleanDigits : `92${cleanDigits}`) : "923106541965";
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/923156950134?text=${encoded}`, "_blank");
+    window.open(`https://wa.me/${waNumber}?text=${encoded}`, "_blank");
   };
 
 
@@ -1415,8 +1508,31 @@ export default function App() {
         <span className="text-sm font-bold tracking-tight">Order On WhatsApp</span>
       </button>
 
-      {/* --- HEADER NAVIGATION (Perfectly Replicating Screenshot Layout) --- */}
-      <header className="sticky top-0 z-40 bg-[#fdfbf7]/90 backdrop-blur-md border-b border-rose-100 shadow-sm px-6 lg:px-12 py-3">
+      {/* --- RENDER ADMIN DASHBOARD IF OPEN --- */}
+      {isAdminOpen ? (
+        <AdminDashboard
+          products={productList as ProductItem[]}
+          onUpdateProducts={handleUpdateProducts}
+          onCloseAdmin={() => setIsAdminOpen(false)}
+          storePhone={storePhone}
+          onUpdateStorePhone={setStorePhone}
+          announcementText={announcementText}
+          onUpdateAnnouncement={setAnnouncementText}
+        />
+      ) : (
+        <>
+          {/* --- TOP ANNOUNCEMENT BAR --- */}
+          <div className="bg-stone-900 text-stone-200 text-xs py-2 px-4 border-b border-stone-800 text-center">
+            <div className="max-w-7xl mx-auto w-full flex items-center justify-center gap-2 font-medium text-[11px] sm:text-xs">
+              <span className="bg-pink-500 text-white font-black px-2 py-0.5 rounded-full text-[10px] uppercase">
+                Offer
+              </span>
+              <span className="truncate">{announcementText}</span>
+            </div>
+          </div>
+
+          {/* --- HEADER NAVIGATION (Perfectly Replicating Screenshot Layout) --- */}
+          <header className="sticky top-0 z-40 bg-[#fdfbf7]/90 backdrop-blur-md border-b border-rose-100 shadow-sm px-6 lg:px-12 py-3">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           
           {/* Logo Brand Frame */}
@@ -1738,70 +1854,154 @@ export default function App() {
                 ⚠️ **Advance Payment Policy:** As per our business terms, we request **50% payment in advance** via EasyPaisa or JazzCash, and the remaining **50% + Rs. 200 delivery charges** on delivery!
               </p>
 
+              {Object.keys(formErrors).length > 0 && (
+                <div className="bg-rose-500/10 border border-rose-500/30 text-rose-700 p-3.5 rounded-2xl text-xs font-bold space-y-1">
+                  <p className="flex items-center gap-1.5 font-black text-rose-800">
+                    <AlertTriangle className="w-4 h-4 text-rose-600 shrink-0" />
+                    <span>Meharbani karke pehle tamaam required details pur karain:</span>
+                  </p>
+                  <ul className="list-disc list-inside text-[11px] font-semibold text-rose-600 pl-1 space-y-0.5">
+                    {Object.values(formErrors).map((err, idx) => (
+                      <li key={idx}>{err}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
               {/* Step 1: Customer details */}
               <div className="space-y-3.5">
                 <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
-                  1. Shipping Information
+                  1. Shipping Information (Mandatory Details)
                 </h4>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Your Full Name</label>
+                  <label className="text-[10px] font-bold text-stone-600 uppercase block">
+                    Your Full Name <span className="text-rose-500 font-black">*</span>
+                  </label>
                   <input
                     type="text"
                     required
                     value={shippingName}
-                    onChange={(e) => setShippingName(e.target.value)}
+                    onChange={(e) => {
+                      setShippingName(e.target.value);
+                      if (formErrors.name) setFormErrors(prev => ({ ...prev, name: "" }));
+                    }}
                     placeholder="e.g. Muhammad Ahmad"
-                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                    className={`w-full bg-stone-50 border text-xs px-3.5 py-3 rounded-xl focus:outline-none font-medium transition-all ${
+                      formErrors.name 
+                        ? "border-rose-500 bg-rose-50/20 ring-2 ring-rose-500/20" 
+                        : "border-stone-200/80 focus:ring-2 focus:ring-pink-500/20"
+                    }`}
                   />
+                  {formErrors.name && (
+                    <p className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+                      ⚠️ {formErrors.name}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Phone Number (Active WhatsApp)</label>
+                  <label className="text-[10px] font-bold text-stone-600 uppercase block">
+                    Phone Number (Active WhatsApp) <span className="text-rose-500 font-black">*</span>
+                  </label>
                   <input
                     type="text"
                     required
                     value={shippingPhone}
-                    onChange={(e) => setShippingPhone(e.target.value)}
-                    placeholder="e.g. 03156950134"
-                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                    onChange={(e) => {
+                      setShippingPhone(e.target.value);
+                      if (formErrors.phone) setFormErrors(prev => ({ ...prev, phone: "" }));
+                    }}
+                    placeholder="e.g. 03106541965"
+                    className={`w-full bg-stone-50 border text-xs px-3.5 py-3 rounded-xl focus:outline-none font-medium transition-all ${
+                      formErrors.phone 
+                        ? "border-rose-500 bg-rose-50/20 ring-2 ring-rose-500/20" 
+                        : "border-stone-200/80 focus:ring-2 focus:ring-pink-500/20"
+                    }`}
                   />
+                  {formErrors.phone && (
+                    <p className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+                      ⚠️ {formErrors.phone}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-stone-400 uppercase block">City Name</label>
+                  <label className="text-[10px] font-bold text-stone-600 uppercase block">
+                    City Name (Shehar) <span className="text-rose-500 font-black">*</span>
+                  </label>
                   <input
                     type="text"
                     required
                     value={shippingCity}
-                    onChange={(e) => setShippingCity(e.target.value)}
+                    onChange={(e) => {
+                      setShippingCity(e.target.value);
+                      if (formErrors.city) setFormErrors(prev => ({ ...prev, city: "" }));
+                    }}
                     placeholder="e.g. Sahiwal"
-                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                    className={`w-full bg-stone-50 border text-xs px-3.5 py-3 rounded-xl focus:outline-none font-medium transition-all ${
+                      formErrors.city 
+                        ? "border-rose-500 bg-rose-50/20 ring-2 ring-rose-500/20" 
+                        : "border-stone-200/80 focus:ring-2 focus:ring-pink-500/20"
+                    }`}
                   />
+                  {formErrors.city && (
+                    <p className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+                      ⚠️ {formErrors.city}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-stone-400 uppercase block">Area / Bazaar / Landmark / Street Name</label>
+                  <label className="text-[10px] font-bold text-stone-600 uppercase block">
+                    Area / Bazaar / Landmark / Street Name <span className="text-rose-500 font-black">*</span>
+                  </label>
                   <input
                     type="text"
                     required
                     value={shippingArea}
-                    onChange={(e) => setShippingArea(e.target.value)}
+                    onChange={(e) => {
+                      setShippingArea(e.target.value);
+                      if (formErrors.area) setFormErrors(prev => ({ ...prev, area: "" }));
+                    }}
                     placeholder="e.g. Saddar Bazaar, near Main Market"
-                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                    className={`w-full bg-stone-50 border text-xs px-3.5 py-3 rounded-xl focus:outline-none font-medium transition-all ${
+                      formErrors.area 
+                        ? "border-rose-500 bg-rose-50/20 ring-2 ring-rose-500/20" 
+                        : "border-stone-200/80 focus:ring-2 focus:ring-pink-500/20"
+                    }`}
                   />
+                  {formErrors.area && (
+                    <p className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+                      ⚠️ {formErrors.area}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-stone-400 uppercase block">House Address / House Number</label>
+                  <label className="text-[10px] font-bold text-stone-600 uppercase block">
+                    House Address / House Number <span className="text-rose-500 font-black">*</span>
+                  </label>
                   <input
                     type="text"
                     required
                     value={shippingHouse}
-                    onChange={(e) => setShippingHouse(e.target.value)}
+                    onChange={(e) => {
+                      setShippingHouse(e.target.value);
+                      if (formErrors.house) setFormErrors(prev => ({ ...prev, house: "" }));
+                    }}
                     placeholder="e.g. House # 12, Block-C"
-                    className="w-full bg-stone-50 border border-stone-200/80 text-xs px-3.5 py-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-500/20 font-medium"
+                    className={`w-full bg-stone-50 border text-xs px-3.5 py-3 rounded-xl focus:outline-none font-medium transition-all ${
+                      formErrors.house 
+                        ? "border-rose-500 bg-rose-50/20 ring-2 ring-rose-500/20" 
+                        : "border-stone-200/80 focus:ring-2 focus:ring-pink-500/20"
+                    }`}
                   />
+                  {formErrors.house && (
+                    <p className="text-[10px] font-bold text-rose-600 flex items-center gap-1">
+                      ⚠️ {formErrors.house}
+                    </p>
+                  )}
                 </div>
               </div>
 
@@ -1849,7 +2049,7 @@ export default function App() {
                   </div>
                   <div className="flex justify-between items-center text-xs">
                     <span className="font-bold text-stone-500">Account / Phone:</span>
-                    <span className="font-black text-pink-600 tracking-wider">0315-6950134</span>
+                    <span className="font-black text-pink-600 tracking-wider">{storePhone}</span>
                   </div>
                 </div>
               </div>
@@ -2158,7 +2358,7 @@ export default function App() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PRODUCTS.slice(0, 6).map((product) => renderProductCard(product))}
+                {productList.slice(0, 6).map((product) => renderProductCard(product))}
               </div>
             </div>
 
@@ -2219,7 +2419,7 @@ export default function App() {
 
             {/* Catalog Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {PRODUCTS.filter(p => selectedProductCategory === "all" || p.category === selectedProductCategory).map((product) => renderProductCard(product))}
+              {productList.filter(p => selectedProductCategory === "all" || p.category === selectedProductCategory).map((product) => renderProductCard(product))}
             </div>
           </div>
         )}
@@ -2926,14 +3126,28 @@ export default function App() {
         </div>
 
         <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-stone-800 text-center text-[10px] font-bold text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span>© {new Date().getFullYear()} Mini Paint Station. All rights reserved. Made for young explorers.</span>
-          <div className="flex gap-4">
+          <span 
+            className="cursor-pointer hover:text-stone-400 select-none"
+            onClick={() => {
+              const next = footerSecretClicks + 1;
+              setFooterSecretClicks(next);
+              if (next >= 3) {
+                setIsAdminOpen(true);
+                setFooterSecretClicks(0);
+              }
+            }}
+          >
+            © {new Date().getFullYear()} Mini Paint Station. All rights reserved. Made for young explorers.
+          </span>
+          <div className="flex gap-4 items-center">
             <span>Safety Guidelines</span>
             <span>Terms of Service</span>
             <span>Privacy Policy</span>
           </div>
         </div>
       </footer>
+    </>
+  )}
 
     </div>
   );
