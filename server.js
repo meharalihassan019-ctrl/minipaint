@@ -78,7 +78,7 @@ app.post('/api/generate-stencil', async (req, res) => {
       "5. Do NOT include any markdown block markers like ```xml or ```svg or ```, and no introductory or concluding text. Output ONLY the raw <svg>...</svg> string.";
 
     const response = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.5-flash',
       contents: [
         { role: 'user', parts: [{ text: `Create a clean black outline vector SVG coloring page for: ${prompt}` }] }
       ],

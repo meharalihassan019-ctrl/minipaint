@@ -93,7 +93,7 @@ const PRODUCTS: Product[] = [
     description: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake.",
     price: 399,
     category: "plaster",
-    image: "/src/assets/images/custom_name_kit_1784717468351.jpg",
+    image: "/assets/images/custom_name_kit_1784717468351.jpg",
     stars: 5,
     ratingValue: 4.9,
     ratingLabel: "PAINT KITS",
@@ -105,12 +105,28 @@ const PRODUCTS: Product[] = [
     isBestSeller: true
   },
   {
+    id: "prod-small-ceramic-toy",
+    name: "Small Ceramic Toy 🧸",
+    description: "Cute small unpainted ceramic toy figurine. Perfect for kids painting activities, party favors, return gifts, and creative DIY fun.",
+    price: 10,
+    category: "plaster",
+    image: "/assets/images/small_ceramic_toy_1784787999635.jpg",
+    stars: 5,
+    ratingValue: 4.8,
+    ratingLabel: "TOYS",
+    hasBannerImage: true,
+    bannerText: "🧸 SMALL UNPAINTED CERAMIC TOY - RS 10",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Small Size 🧸",
+    badge: "Budget Friendly"
+  },
+  {
     id: "prod-extra-medium-toy",
-    name: "Single Ceramic Toy",
+    name: "Single Ceramic Toy (Medium)",
     description: "Perfect for creative play, school activities, party favors, gifts, and DIY painting projects. Each ceramic toy is made from high-quality material and is ready to be painted.",
     price: 10,
     category: "plaster",
-    image: "/src/assets/images/extra_medium_toy_1784717566247.jpg",
+    image: "/assets/images/extra_medium_toy_1784717566247.jpg",
     stars: 4,
     ratingValue: 4.7,
     ratingLabel: "TOYS",
@@ -121,18 +137,18 @@ const PRODUCTS: Product[] = [
   },
   {
     id: "prod-extra-brush",
-    name: "Extra Paint Brush",
+    name: "Painting Brush 🖌️",
     description: "A high-quality paint brush designed for ceramic painting, DIY crafts, and creative projects. Easy to hold, smooth to use, and perfect for detailed artwork.",
-    price: 40,
+    price: 50,
     category: "accessories",
-    image: "/src/assets/images/extra_paint_brush_1784717546894.jpg",
+    image: "/assets/images/painting_brush_50_1784787693971.jpg",
     stars: 4,
     ratingValue: 4.8,
     ratingLabel: "BRUSHES",
     hasBannerImage: true,
-    bannerText: "🖌️ PREMIUM FINE DETAIL BRUSH",
+    bannerText: "🖌️ PREMIUM PAINTING BRUSH",
     ageBadge: "🥚 All Ages",
-    topRightBadge: "Fine Brush 🖌️"
+    topRightBadge: "Paint Brush 🖌️"
   },
   {
     id: "prod-medium-kit",
@@ -140,7 +156,7 @@ const PRODUCTS: Product[] = [
     description: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination.",
     price: 299,
     category: "plaster",
-    image: "/src/assets/images/medium_paint_kit_pack_1784787370296.jpg",
+    image: "/assets/images/medium_paint_kit_pack_1784787370296.jpg",
     stars: 5,
     ratingValue: 4.9,
     ratingLabel: "PAINT KITS",
@@ -157,7 +173,7 @@ const PRODUCTS: Product[] = [
     description: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Perfect as a refill or for extra creative options.",
     price: 80,
     category: "paints",
-    image: "/src/assets/images/extra_paint_strip_1784717529660.jpg",
+    image: "/assets/images/extra_paint_strip_1784717529660.jpg",
     stars: 5,
     ratingValue: 4.8,
     ratingLabel: "BRUSHES",
@@ -172,7 +188,7 @@ const PRODUCTS: Product[] = [
     description: "Large Paint & Play Kit. A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination.",
     price: 399,
     category: "plaster",
-    image: "/src/assets/images/large_paint_kit_1784717515804.jpg",
+    image: "/assets/images/large_paint_kit_1784717515804.jpg",
     stars: 5,
     ratingValue: 4.9,
     ratingLabel: "PAINT KITS",
@@ -189,7 +205,7 @@ const PRODUCTS: Product[] = [
     description: "Perfect starter paint-and-play set for young creators. Includes 2 large figures, 2 small figures, paints, and brush.",
     price: 199,
     category: "plaster",
-    image: "/src/assets/images/small_paint_kit_1784717498828.jpg",
+    image: "/assets/images/small_paint_kit_1784717498828.jpg",
     stars: 5,
     ratingValue: 4.8,
     ratingLabel: "PAINT KITS",
@@ -201,19 +217,19 @@ const PRODUCTS: Product[] = [
   },
   {
     id: "prod-extra-big-toy",
-    name: "1 Extra Toy (Big Size)",
-    description: "Single large-size ceramic toy model. Adds extra fun and paintable variety to any child's coloring adventure.",
+    name: "Big Ceramic Toy 🧸",
+    description: "Single large-size ceramic toy figurine (teddy bear with balloons, burger, donut). Adds extra scale and fun to your child's coloring adventure.",
     price: 15,
     category: "plaster",
-    image: "/src/assets/images/extra_big_toy_1784717581622.jpg",
+    image: "/assets/images/big_ceramic_toy_15_1784789245573.jpg",
     stars: 5,
-    ratingValue: 4.7,
+    ratingValue: 4.8,
     ratingLabel: "TOYS",
     hasBannerImage: true,
-    bannerText: "🦖 LARGE CERAMIC FIGURINE",
+    bannerText: "🧸 BIG CERAMIC TOY - RS 15",
     ageBadge: "🥚 Ages 3+",
-    topRightBadge: "Big Size 🦖",
-    badge: "New Release"
+    topRightBadge: "Big Size 🧸",
+    badge: "Popular Choice"
   }
 ];
 
@@ -236,7 +252,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "Custom Name Painting Kit",
         price: 399,
-        image: "/src/assets/images/custom_name_kit_1784717468351.jpg",
+        image: "/assets/images/custom_name_kit_1784717468351.jpg",
         desc: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake that's fun to make and beautiful to display. Perfect for kids, birthday gifts, room décor, return gifts, and creative activities.",
         included: [
           "Custom Ceramic Name (8-12 Letters)",
@@ -249,11 +265,28 @@ function getProductDetails(id: string): RichProductDetail {
           "Enter your desired name in the checkout form or send it via WhatsApp after placing your order."
         ]
       };
+    case "prod-small-ceramic-toy":
+      return {
+        title: "Small Ceramic Toy 🧸",
+        price: 10,
+        image: "/assets/images/small_ceramic_toy_1784787999635.jpg",
+        shortHeading: "Small Ceramic Toy – Rs 10 🧸",
+        desc: "A cute small unpainted ceramic toy figurine ready to be painted. Perfect for kids, party favors, birthday return gifts, classroom activities, and screen-free creative fun.",
+        included: [
+          "1 Small Ceramic Toy Figurine",
+          "Smooth Edges & Dust Free"
+        ],
+        whatsapp: "0315-6950134",
+        notes: [
+          "Crafted from safe, non-toxic plaster material.",
+          "Available in various cute designs (star, car, mini figures)."
+        ]
+      };
     case "prod-medium-kit":
       return {
         title: "Medium Painting Kit 🎨",
         price: 299,
-        image: "/src/assets/images/medium_paint_kit_pack_1784787370296.jpg",
+        image: "/assets/images/medium_paint_kit_pack_1784787370296.jpg",
         shortHeading: "Medium Paint & Play Kit 🎨",
         desc: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination. Perfect for birthdays, gifts, family activities, classrooms, and screen-free fun.",
         included: [
@@ -272,7 +305,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "Small Painting Kit 🎨",
         price: 199,
-        image: "/src/assets/images/small_paint_kit_1784717498828.jpg",
+        image: "/assets/images/small_paint_kit_1784717498828.jpg",
         shortHeading: "Mini Paint Station – Paint & Play Kit 🎨",
         desc: "A fun DIY painting kit that inspires creativity and imaginative play. Perfect for gifts, birthdays, classrooms, family activities, and screen-free fun.",
         included: [
@@ -292,7 +325,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "Large Painting Kit 🎨",
         price: 399,
-        image: "/src/assets/images/large_paint_kit_1784717515804.jpg",
+        image: "/assets/images/large_paint_kit_1784717515804.jpg",
         desc: "A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination. Kids can paint, decorate, and personalize their favorite designs while developing creativity and fine motor skills. Perfect for birthdays, gifts, family activities, classrooms, and screen-free play.",
         included: [
           "9 Large Ceramic Toys",
@@ -309,7 +342,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "Extra 6 Color Paint Strip",
         price: 80,
-        image: "/src/assets/images/extra_paint_strip_1784717529660.jpg",
+        image: "/assets/images/extra_paint_strip_1784717529660.jpg",
         desc: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Need extra paint or some new shades for your craft project? Our extra six-color paint strip has high-coverage pots.",
         included: [
           "6 Vibrant Paint Colours",
@@ -322,15 +355,17 @@ function getProductDetails(id: string): RichProductDetail {
       };
     case "prod-extra-brush":
       return {
-        title: "Extra Paint Brush",
-        price: 40,
-        image: "/src/assets/images/extra_paint_brush_1784717546894.jpg",
+        title: "Painting Brush 🖌️",
+        price: 50,
+        image: "/assets/images/painting_brush_50_1784787693971.jpg",
+        shortHeading: "Painting Brush 🖌️",
         desc: "A high-quality paint brush designed for ceramic painting, DIY crafts, and detailed creative projects. Easy to hold, smooth to use, and perfect for detailed artwork.",
         included: [
-          "1 Premium Paint Brush"
+          "1 Fine Detail Painting Brush"
         ],
+        whatsapp: "0315-6950134",
         notes: [
-          "Durable wooden handle tailored for children's hands.",
+          "Lightweight durable handle tailored for children's hands.",
           "Perfect as a replacement or extra brush for creative fun."
         ]
       };
@@ -338,7 +373,7 @@ function getProductDetails(id: string): RichProductDetail {
       return {
         title: "1 Extra Toy (Medium Size)",
         price: 10,
-        image: "/src/assets/images/extra_medium_toy_1784717566247.jpg",
+        image: "/assets/images/extra_medium_toy_1784717566247.jpg",
         desc: "Perfect for creative play, school activities, party favors, gifts, and DIY painting projects. Each ceramic toy is made from high-quality material and is ready to be painted.",
         included: [
           "1 Small/Medium Ceramic Toy",
@@ -351,17 +386,19 @@ function getProductDetails(id: string): RichProductDetail {
       };
     case "prod-extra-big-toy":
       return {
-        title: "1 Extra Toy (Big Size)",
+        title: "Big Ceramic Toy 🧸",
         price: 15,
-        image: "/src/assets/images/extra_big_toy_1784717581622.jpg",
-        desc: "Single high-quality large ceramic toy model. Adds extra fun and scale to your child's coloring adventures. Great as a single focal piece to practice detailed painting.",
+        image: "/assets/images/big_ceramic_toy_15_1784789245573.jpg",
+        shortHeading: "Big Ceramic Toy – Rs 15 🧸",
+        desc: "Single high-quality large ceramic toy figurine (teddy bear with balloons, burger, donut). Adds extra scale and fun to your child's coloring adventures.",
         included: [
-          "1 Large Ceramic Toy",
-          "Ready to Paint & Decorate"
+          "1 Large Ceramic Toy Figurine",
+          "Smooth Edges & Dust-Free Finish"
         ],
+        whatsapp: "0315-6950134",
         notes: [
           "Carefully packaged to prevent chipping.",
-          "Designs vary depending on stock."
+          "Designs include teddy bear with balloons, burger, donut and more."
         ]
       };
     default:
