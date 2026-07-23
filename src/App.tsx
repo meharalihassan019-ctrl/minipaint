@@ -53,6 +53,8 @@ import bigCeramicToyImg from "./assets/images/big_ceramic_toy_15_1784789245573.j
 
 // --- ADMIN DASHBOARD INTEGRATION ---
 import AdminDashboard, { ProductItem } from "./components/AdminDashboard";
+import { Toy3DStudio } from "./components/Toy3DStudio";
+import { FooterSection } from "./components/FooterSection";
 
 // --- TYPES ---
 type Tab = "home" | "products" | "studio" | "stencil" | "resources" | "contact";
@@ -2275,6 +2277,16 @@ export default function App() {
 
             </div>
 
+            {/* 3D INTERACTIVE CERAMIC STUDIO SECTION */}
+            <div className="pt-6">
+              <Toy3DStudio 
+                triggerToast={triggerToast}
+                onOrderKit={(toyName, colors) => {
+                  triggerWhatsAppQuery(`Hi Mini Paint Station! I designed a custom 3D ${toyName} figurine with colors (${colors.join(", ")}). I would like to order this 3D kit!`);
+                }} 
+              />
+            </div>
+
             {/* PRODUCT CATEGORIES / DISCOVERY CARDS */}
             <div className="space-y-6 pt-10 border-t border-rose-100/50">
               <div className="text-center max-w-xl mx-auto space-y-2">
@@ -2991,8 +3003,8 @@ export default function App() {
                     <div className="flex items-start gap-3">
                       <Phone className="w-5 h-5 text-pink-400 mt-0.5" />
                       <div>
-                        <span className="block text-[11px] text-stone-300 font-bold uppercase">Direct Support</span>
-                        <span className="text-xs font-extrabold text-white">Muhammad Ahmad (+92 315-6950134)</span>
+                        <span className="block text-[11px] text-stone-300 font-bold uppercase">Direct Support / WhatsApp</span>
+                        <span className="text-xs font-extrabold text-white">Muhammad Ahmad (+92 310-6541965)</span>
                       </div>
                     </div>
 
@@ -3009,8 +3021,26 @@ export default function App() {
                       <div>
                         <span className="block text-[11px] text-stone-300 font-bold uppercase">Main Studio Address</span>
                         <span className="text-xs font-extrabold text-white">Mini Paint Station, Sahiwal City, Punjab, Pakistan</span>
+                        <a 
+                          href="https://maps.google.com/?q=Sahiwal+Punjab+Pakistan" 
+                          target="_blank" 
+                          rel="noreferrer" 
+                          className="inline-block mt-1 text-[11px] text-pink-300 hover:text-white font-bold underline"
+                        >
+                          View Sahiwal Map 📍
+                        </a>
                       </div>
                     </div>
+                  </div>
+
+                  {/* Sahiwal Embedded Map Frame */}
+                  <div className="rounded-2xl overflow-hidden border border-blue-800 shadow-inner h-36 relative">
+                    <iframe 
+                      title="Sahiwal Studio Location"
+                      src="https://maps.google.com/maps?q=Sahiwal,%20Punjab,%20Pakistan&t=&z=13&ie=UTF8&iwloc=&output=embed" 
+                      className="w-full h-full border-0"
+                      loading="lazy"
+                    />
                   </div>
                 </div>
 
@@ -3079,73 +3109,13 @@ export default function App() {
 
       </main>
 
-      {/* --- FOOTER MAIN --- */}
-      <footer className="bg-stone-900 text-stone-400 text-xs py-12 px-6 mt-16 border-t border-stone-800">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          
-          <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-xl">
-                🎨
-              </div>
-              <h3 className="text-base font-extrabold text-white leading-none">
-                minipaint<span className="text-pink-500">station</span>
-              </h3>
-            </div>
-            <p className="text-[11px] leading-relaxed text-stone-400">
-              The premium destination for kids' hand-made non-toxic plaster figures, customized natural wooden blocks, and mess-free washables.
-            </p>
-          </div>
-
-          <div className="space-y-3">
-            <h4 className="font-extrabold text-stone-300 uppercase text-[10px] tracking-wider">Quick Links</h4>
-            <div className="flex flex-col gap-2 font-semibold">
-              <button onClick={() => setCurrentTab("home")} className="text-left hover:text-white transition-colors">Home Landing</button>
-              <button onClick={() => setCurrentTab("products")} className="text-left hover:text-white transition-colors">Creative Shop</button>
-              <button onClick={() => setCurrentTab("studio")} className="text-left hover:text-white transition-colors">Kids Studio</button>
-              <button onClick={() => setCurrentTab("stencil")} className="text-left hover:text-white transition-colors">AI Stencil Maker</button>
-            </div>
-          </div>
-
-          <div className="space-y-3">
-            <h4 className="font-extrabold text-stone-300 uppercase text-[10px] tracking-wider">Best Sellers</h4>
-            <div className="flex flex-col gap-2 font-semibold">
-              <span className="text-[11px]">3D Plaster Dinosaur Figures</span>
-              <span className="text-[11px]">Premium Storybook Wooden Planks</span>
-              <span className="text-[11px]">Super Washable Kids Paints Set</span>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <h4 className="font-extrabold text-stone-300 uppercase text-[10px] tracking-wider">Our Commitment</h4>
-            <p className="text-[11px] leading-relaxed text-stone-400">
-              Every single product we sell is manually inspected and tested for high safety guidelines. We ensure 100% lead-free, non-toxic organic compounds.
-            </p>
-          </div>
-
-        </div>
-
-        <div className="max-w-7xl mx-auto mt-12 pt-6 border-t border-stone-800 text-center text-[10px] font-bold text-stone-500 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <span 
-            className="cursor-pointer hover:text-stone-400 select-none"
-            onClick={() => {
-              const next = footerSecretClicks + 1;
-              setFooterSecretClicks(next);
-              if (next >= 3) {
-                setIsAdminOpen(true);
-                setFooterSecretClicks(0);
-              }
-            }}
-          >
-            © {new Date().getFullYear()} Mini Paint Station. All rights reserved. Made for young explorers.
-          </span>
-          <div className="flex gap-4 items-center">
-            <span>Safety Guidelines</span>
-            <span>Terms of Service</span>
-            <span>Privacy Policy</span>
-          </div>
-        </div>
-      </footer>
+      {/* --- GRAND FOOTER COMPONENT --- */}
+      <FooterSection 
+        onNavigateTab={(tab) => setCurrentTab(tab as Tab)}
+        onOpenAdmin={() => setIsAdminOpen(true)}
+        triggerWhatsAppQuery={triggerWhatsAppQuery}
+        storePhone={storePhone}
+      />
     </>
   )}
 
