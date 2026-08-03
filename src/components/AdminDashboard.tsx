@@ -27,7 +27,8 @@ import {
   Store,
   Layers,
   Clock,
-  ArrowUpRight
+  ArrowUpRight,
+  Upload
 } from "lucide-react";
 
 export interface ProductItem {
@@ -194,6 +195,32 @@ export default function AdminDashboard({
   useEffect(() => {
     runDiagnostics();
   }, [products]);
+
+  // Handle Direct Image File Upload from Gallery/Computer
+  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      alert("Baraye karam sirf image/tasveer file select karain!");
+      return;
+    }
+
+    // Limit file size to ~3MB before encoding to keep localStorage safe
+    if (file.size > 5 * 1024 * 1024) {
+      alert("Image size bohat bara hai. Baraye meherbani 5MB se choti picture select karain!");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const dataUrl = event.target?.result as string;
+      if (dataUrl) {
+        setFormData(prev => ({ ...prev, image: dataUrl }));
+      }
+    };
+    reader.readAsDataURL(file);
+  };
 
   // Product Edit Handlers
   const handleEditClick = (product: ProductItem) => {
@@ -727,14 +754,70 @@ export default function AdminDashboard({
                     />
                   </div>
 
-                  <div>
-                    <label className="block font-bold text-stone-700 mb-1">Image URL / Path</label>
-                    <input
-                      type="text"
-                      value={formData.image || ""}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      className="w-full p-2.5 bg-stone-50 border border-stone-300 rounded-xl font-mono text-[11px] text-stone-800"
-                    />
+                  {/* Product Image Upload & URL Section */}
+                  <div className="md:col-span-2 bg-stone-50 border-2 border-dashed border-stone-300 p-4 rounded-2xl space-y-3">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                      <div>
+                        <label className="block font-black text-stone-900 text-xs uppercase tracking-wider flex items-center gap-1.5">
+                          <ImageIcon className="w-4 h-4 text-pink-600" />
+                          <span>Product Image / Tasveer Change Karain *</span>
+                        </label>
+                        <p className="text-[11px] text-stone-500">
+                          Mobile gallery se direct picture upload karain ya niche image link add karain
+                        </p>
+                      </div>
+
+                      {/* Direct File Picker Button */}
+                      <label className="cursor-pointer bg-pink-600 hover:bg-pink-700 active:scale-95 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all self-start sm:self-auto shrink-0">
+                        <Upload className="w-4 h-4" />
+                        <span>📷 Upload Photo From Gallery / Mobile</span>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageFileUpload}
+                          className="hidden"
+                        />
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-4 gap-3 items-center">
+                      {/* Image Preview Box */}
+                      <div className="sm:col-span-1 h-28 bg-white border border-stone-200 rounded-xl overflow-hidden flex items-center justify-center relative group shadow-xs">
+                        {formData.image && formData.image.length > 5 ? (
+                          <>
+                            <img src={formData.image} alt="Product Preview" className="w-full h-full object-cover" />
+                            <button
+                              type="button"
+                              onClick={() => setFormData({ ...formData, image: "" })}
+                              className="absolute top-1 right-1 bg-rose-600 text-white p-1 rounded-full text-xs shadow-md opacity-90 hover:opacity-100"
+                              title="Remove image"
+                            >
+                              <X className="w-3.5 h-3.5" />
+                            </button>
+                          </>
+                        ) : (
+                          <div className="text-center p-2 text-stone-400 text-[10px] font-bold">
+                            <ImageIcon className="w-6 h-6 mx-auto mb-1 opacity-50" />
+                            <span>No Photo Selected</span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Image URL Textbox Option */}
+                      <div className="sm:col-span-3 space-y-1">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase">Or Image URL / File Path:</span>
+                        <input
+                          type="text"
+                          placeholder="https://... or /assets/images/photo.jpg"
+                          value={formData.image || ""}
+                          onChange={(e) => setFormData({ ...formData, image: e.target.value })}
+                          className="w-full p-2.5 bg-white border border-stone-300 rounded-xl font-mono text-[11px] text-stone-800 focus:ring-2 focus:ring-pink-500"
+                        />
+                        <p className="text-[10px] text-emerald-600 font-bold">
+                          ✓ Tip: Mobile gallery se picture select karne par yahan automatic photo update ho jaye gi.
+                        </p>
+                      </div>
+                    </div>
                   </div>
 
                   <div>

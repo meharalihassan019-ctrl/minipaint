@@ -1409,9 +1409,9 @@ export default function App() {
 
     const subtotal = getCartTotal();
     const delivery = 200;
+    const advanceDelivery = 100;
+    const codAmount = subtotal + 100;
     const grandTotal = subtotal + delivery;
-    const advance = Math.round(subtotal * 0.5);
-    const onDelivery = grandTotal - advance;
 
     let text = `*🆕 NEW ORDER FROM MINI PAINT STATION* 🎨📦\n\n`;
     text += `*👤 Customer Details:*\n`;
@@ -1423,7 +1423,7 @@ export default function App() {
 
     text += `*💳 Payment Method Chosen:*\n`;
     text += `• *Advance Payment Method:* ${paymentMethod === "easypaisa" ? "EasyPaisa" : "JazzCash"}\n`;
-    text += `• *Advance Paid (50%):* Rs. ${advance}\n`;
+    text += `• *Advance Delivery Fee (50%):* Rs. ${advanceDelivery}\n`;
     text += `• *Account Name:* Muhammad Ahmad\n`;
     text += `• *Account Number:* ${storePhone}\n\n`;
 
@@ -1434,12 +1434,12 @@ export default function App() {
     text += `\n`;
 
     text += `*💰 Pricing Breakdown:*\n`;
-    text += `• Subtotal: Rs. ${subtotal}\n`;
-    text += `• Delivery Charges: Rs. ${delivery}\n`;
+    text += `• Products Total: Rs. ${subtotal}\n`;
+    text += `• Delivery Fee Total: Rs. ${delivery}\n`;
     text += `• Grand Total: Rs. ${grandTotal}\n`;
     text += `----------------------------\n`;
-    text += `• *⭐ 50% Advance (Required): Rs. ${advance}*\n`;
-    text += `• *🚚 Cash on Delivery (CoD): Rs. ${onDelivery}*\n\n`;
+    text += `• *⭐ Advance Delivery Fee (50% via EasyPaisa/JazzCash): Rs. ${advanceDelivery}*\n`;
+    text += `• *🚚 Cash on Delivery (Product Price + Rs. 100 Remaining Delivery): Rs. ${codAmount}*\n\n`;
     text += `Please process and confirm my order! Thank you. ❤️`;
 
     const cleanDigits = storePhone.replace(/[^0-9]/g, "").replace(/^0+/, "");
@@ -1872,7 +1872,7 @@ export default function App() {
             {/* Scrollable Form Body */}
             <div className="p-6 overflow-y-auto space-y-5 flex-1">
               <p className="text-[11px] text-stone-600 font-bold leading-relaxed bg-amber-50 border border-amber-150 p-3.5 rounded-2xl">
-                ⚠️ **Advance Payment Policy:** As per our business terms, we request **50% payment in advance** via EasyPaisa or JazzCash, and the remaining **50% + Rs. 200 delivery charges** on delivery!
+                🚚 **Advance Delivery Policy:** Total delivery charges are **Rs. 200**. We only ask for **half delivery fee (Rs. 100)** in advance via EasyPaisa / JazzCash to confirm your order! The remaining **Rs. 100 delivery fee + product total (Rs. {getCartTotal()}) = Rs. {getCartTotal() + 100}** will be collected on **Cash on Delivery (CoD)**!
               </p>
 
               {Object.keys(formErrors).length > 0 && (
@@ -2097,12 +2097,12 @@ export default function App() {
                   
                   <div className="pt-2 mt-2 border-t border-stone-200 flex flex-col gap-1">
                     <div className="flex justify-between items-center bg-pink-50 p-2 rounded-xl text-pink-700 font-black">
-                      <span className="flex items-center gap-1">⭐ 50% Advance Required:</span>
-                      <span>Rs. {Math.round(getCartTotal() * 0.5)}</span>
+                      <span className="flex items-center gap-1">⭐ Advance Delivery Fee (50%):</span>
+                      <span>Rs. 100</span>
                     </div>
                     <div className="flex justify-between items-center bg-green-50 p-2 rounded-xl text-green-700 font-black">
-                      <span className="flex items-center gap-1">🚚 Remaining On Delivery:</span>
-                      <span>Rs. {getCartTotal() + 200 - Math.round(getCartTotal() * 0.5)}</span>
+                      <span className="flex items-center gap-1">💵 Product Payment + Rs.100 CoD:</span>
+                      <span>Rs. {getCartTotal() + 100}</span>
                     </div>
                   </div>
                 </div>

@@ -61,7 +61,7 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             </span>
             <span className="text-stone-700">|</span>
             <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> 50% Advance & 50% CoD
+              <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> Rs. 100 Advance Delivery & CoD
             </span>
           </div>
         </div>
