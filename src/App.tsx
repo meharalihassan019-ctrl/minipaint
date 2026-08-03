@@ -112,6 +112,56 @@ const renderProductImage = (imageStr: string, className: string = "w-full h-full
 // --- PRODUCT DATA ---
 const PRODUCTS: Product[] = [
   {
+    id: "prod-medium-kit",
+    name: "Medium Painting Kit 🎨",
+    description: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination.",
+    price: 299,
+    category: "plaster",
+    image: mediumPaintKitPackImg,
+    stars: 5,
+    ratingValue: 4.9,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "🔥 HOT SELLER - 9 TOYS INSIDE!",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Hot Seller 🔥",
+    badge: "Best Value",
+    isBestSeller: true
+  },
+  {
+    id: "prod-large-kit",
+    name: "Large Painting Kit",
+    description: "Large Paint & Play Kit. A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination.",
+    price: 399,
+    category: "plaster",
+    image: largePaintKitImg,
+    stars: 5,
+    ratingValue: 4.9,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "✨ MINI PAINT STATION - 14 TOYS INSIDE!",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "14 Toys Pack ✨",
+    badge: "Best Seller",
+    isBestSeller: true
+  },
+  {
+    id: "prod-small-kit",
+    name: "Small Painting Kit 🎨",
+    description: "Perfect starter paint-and-play set for young creators. Includes 2 large figures, 2 small figures, paints, and brush.",
+    price: 199,
+    category: "plaster",
+    image: smallPaintKitImg,
+    stars: 5,
+    ratingValue: 4.8,
+    ratingLabel: "PAINT KITS",
+    hasBannerImage: true,
+    bannerText: "🎨 STARTER PAINT KIT",
+    ageBadge: "🥚 Ages 3+",
+    topRightBadge: "Starter Set 🧁",
+    badge: "Starter Set"
+  },
+  {
     id: "prod-name-kit",
     name: "Alphabet Set (8-12 Letters)",
     description: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake.",
@@ -175,23 +225,6 @@ const PRODUCTS: Product[] = [
     topRightBadge: "Paint Brush 🖌️"
   },
   {
-    id: "prod-medium-kit",
-    name: "Medium Painting Kit 🎨",
-    description: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination.",
-    price: 299,
-    category: "plaster",
-    image: mediumPaintKitPackImg,
-    stars: 5,
-    ratingValue: 4.9,
-    ratingLabel: "PAINT KITS",
-    hasBannerImage: true,
-    bannerText: "🔥 HOT SELLER - 9 TOYS INSIDE!",
-    ageBadge: "🥚 Ages 3+",
-    topRightBadge: "Hot Seller 🔥",
-    badge: "Best Value",
-    isBestSeller: true
-  },
-  {
     id: "prod-paint-strip",
     name: "Extra 6 Color Paint Strip",
     description: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Perfect as a refill or for extra creative options.",
@@ -205,39 +238,6 @@ const PRODUCTS: Product[] = [
     bannerText: "🎨 6 COLOURS PAINT STRIP",
     ageBadge: "🥚 All Ages",
     topRightBadge: "6 Colours 🎨"
-  },
-  {
-    id: "prod-large-kit",
-    name: "Large Painting Kit",
-    description: "Large Paint & Play Kit. A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination.",
-    price: 399,
-    category: "plaster",
-    image: largePaintKitImg,
-    stars: 5,
-    ratingValue: 4.9,
-    ratingLabel: "PAINT KITS",
-    hasBannerImage: true,
-    bannerText: "✨ MINI PAINT STATION - 14 TOYS INSIDE!",
-    ageBadge: "🥚 Ages 3+",
-    topRightBadge: "14 Toys Pack ✨",
-    badge: "Best Seller",
-    isBestSeller: true
-  },
-  {
-    id: "prod-small-kit",
-    name: "Small Painting Kit 🎨",
-    description: "Perfect starter paint-and-play set for young creators. Includes 2 large figures, 2 small figures, paints, and brush.",
-    price: 199,
-    category: "plaster",
-    image: smallPaintKitImg,
-    stars: 5,
-    ratingValue: 4.8,
-    ratingLabel: "PAINT KITS",
-    hasBannerImage: true,
-    bannerText: "🎨 STARTER PAINT KIT",
-    ageBadge: "🥚 Ages 3+",
-    topRightBadge: "Starter Set 🧁",
-    badge: "Starter Set"
   },
   {
     id: "prod-extra-big-toy",
@@ -714,7 +714,7 @@ export default function App() {
   
   // DYNAMIC PRODUCTS LIST STATE
   const [productList, setProductList] = useState<Product[]>(() => {
-    const saved = localStorage.getItem("mini_paint_products_v2");
+    const saved = localStorage.getItem("mini_paint_products_v4");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -730,7 +730,7 @@ export default function App() {
   const handleUpdateProducts = (updatedProducts: ProductItem[]) => {
     setProductList(updatedProducts as Product[]);
     try {
-      localStorage.setItem("mini_paint_products_v2", JSON.stringify(updatedProducts));
+      localStorage.setItem("mini_paint_products_v4", JSON.stringify(updatedProducts));
     } catch (e) {
       console.error("Failed to save products to localStorage", e);
     }
@@ -1601,14 +1601,19 @@ export default function App() {
           <div className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity" onClick={() => setCartOpen(false)} />
           
           {/* Drawer Content */}
-          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between p-6 z-10 animate-fade-in">
+          <div className="relative w-full max-w-md bg-white h-full shadow-2xl flex flex-col justify-between p-6 z-10 animate-fade-in overflow-y-auto">
             <div>
               <div className="flex items-center justify-between border-b border-stone-100 pb-4">
                 <div className="flex items-center gap-2">
                   <ShoppingBag className="w-5 h-5 text-pink-500" />
                   <h3 className="text-base font-extrabold text-stone-900">Your Creative Bag</h3>
                 </div>
-                <button onClick={() => setCartOpen(false)} className="p-1 rounded-lg hover:bg-stone-100 text-stone-400">
+                <button 
+                  onClick={() => setCartOpen(false)} 
+                  className="p-2 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all font-black flex items-center justify-center cursor-pointer shadow-xs active:scale-90"
+                  aria-label="Close cart drawer"
+                  title="Close Cart (X)"
+                >
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -1678,15 +1683,16 @@ export default function App() {
                 <div className="grid grid-cols-2 gap-3">
                   <button 
                     onClick={() => setCartOpen(false)}
-                    className="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-bold py-3.5 rounded-2xl text-xs transition-all"
+                    className="w-full bg-stone-100 hover:bg-stone-200 text-stone-700 font-extrabold py-3.5 rounded-2xl text-xs transition-all flex items-center justify-center gap-1.5"
                   >
-                    Keep Shopping
+                    <X className="w-4 h-4 text-stone-500" />
+                    <span>Close</span>
                   </button>
                   <button 
                     onClick={handleCheckoutWhatsApp}
-                    className="w-full bg-[#111e47] hover:bg-[#0c1634] text-white font-bold py-3.5 rounded-2xl text-xs flex items-center justify-center gap-2 transition-all shadow-lg animate-pulse"
+                    className="w-full bg-[#111e47] hover:bg-[#0c1634] text-white font-extrabold py-3.5 rounded-2xl text-xs flex items-center justify-center gap-2 transition-all shadow-lg animate-pulse"
                   >
-                    Checkout (WA)
+                    <span>Checkout (WA)</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -1700,20 +1706,22 @@ export default function App() {
       {selectedProductForDetail && (() => {
         const detail = getProductDetails(selectedProductForDetail.id);
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 z-50 overflow-y-auto p-3 sm:p-6 flex items-center justify-center min-h-screen bg-stone-900/70 backdrop-blur-xs transition-opacity animate-fade-in">
             {/* Overlay */}
             <div 
-              className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity animate-fade-in" 
+              className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity" 
               onClick={() => setSelectedProductForDetail(null)} 
             />
             
             {/* Modal Box */}
-            <div className="relative bg-[#fdfbf7] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row z-10 border border-stone-200 animate-scale-up">
+            <div className="relative bg-[#fdfbf7] w-full max-w-2xl rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row z-10 border border-stone-200 animate-scale-up my-auto max-h-[90vh]">
               
-              {/* Close Button ("X" - cros ka nishan) */}
+              {/* Close Button ("X" - prominent rose badge) */}
               <button 
                 onClick={() => setSelectedProductForDetail(null)} 
-                className="absolute top-4 right-4 z-20 bg-white hover:bg-stone-100 p-2 rounded-full border border-stone-200 text-stone-600 transition-colors shadow-sm cursor-pointer"
+                className="absolute top-3 right-3 z-30 bg-rose-100 hover:bg-rose-200 text-rose-700 p-2.5 rounded-full border border-rose-300 transition-all shadow-md cursor-pointer flex items-center justify-center font-black active:scale-90"
+                aria-label="Close product modal"
+                title="Close (X)"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1729,13 +1737,13 @@ export default function App() {
               </div>
 
               {/* Right Column (Details + Action) */}
-              <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6">
+              <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6 overflow-y-auto max-h-[75vh] md:max-h-none">
                 <div className="space-y-4">
                   <div>
                     <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
                       {selectedProductForDetail.category === "plaster" ? "Painting Kit" : selectedProductForDetail.category.toUpperCase()}
                     </span>
-                    <h3 className="text-xl font-black text-[#111e47] leading-tight">
+                    <h3 className="text-xl font-black text-[#111e47] leading-tight pr-8">
                       {selectedProductForDetail.name}
                     </h3>
                     <div className="flex items-center gap-1.5 mt-1 text-sm font-black text-pink-600">
@@ -1800,21 +1808,30 @@ export default function App() {
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="flex items-center justify-between border-t border-stone-100 pt-4 mt-2">
+                <div className="flex items-center justify-between border-t border-stone-100 pt-4 mt-2 gap-2">
                   <div className="flex flex-col">
                     <span className="text-[10px] text-stone-400 font-bold">Total Price</span>
                     <span className="text-lg font-black text-pink-600">Rs. {selectedProductForDetail.price}</span>
                   </div>
-                  <button 
-                    onClick={() => {
-                      handleAddToCart(selectedProductForDetail);
-                      setSelectedProductForDetail(null);
-                    }}
-                    className="bg-[#111e47] hover:bg-[#0c1634] text-white font-black text-xs px-5 py-3 rounded-2xl flex items-center gap-2 shadow-lg shadow-blue-900/10 transition-all cursor-pointer"
-                  >
-                    <span>Add to Bag</span>
-                    <ShoppingBag className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => setSelectedProductForDetail(null)}
+                      className="bg-stone-200 hover:bg-stone-300 text-stone-800 font-extrabold text-xs px-3.5 py-3 rounded-2xl transition-all cursor-pointer flex items-center gap-1"
+                    >
+                      <X className="w-4 h-4 text-stone-600" />
+                      <span>Close</span>
+                    </button>
+                    <button 
+                      onClick={() => {
+                        handleAddToCart(selectedProductForDetail);
+                        setSelectedProductForDetail(null);
+                      }}
+                      className="bg-[#111e47] hover:bg-[#0c1634] text-white font-black text-xs px-4 py-3 rounded-2xl flex items-center gap-1.5 shadow-lg shadow-blue-900/10 transition-all cursor-pointer"
+                    >
+                      <span>Add to Bag</span>
+                      <ShoppingBag className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
 
               </div>
@@ -1826,15 +1843,15 @@ export default function App() {
 
       {/* --- CHECKOUT FORM DETAILS MODAL --- */}
       {checkoutOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-50 overflow-y-auto p-3 sm:p-6 flex items-center justify-center min-h-screen bg-stone-900/70 backdrop-blur-xs transition-opacity animate-fade-in">
           {/* Overlay */}
           <div 
-            className="absolute inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity animate-fade-in" 
+            className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs transition-opacity" 
             onClick={() => setCheckoutOpen(false)} 
           />
           
           {/* Modal Container */}
-          <div className="relative bg-[#fdfbf7] w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-stone-200 z-10 animate-scale-up max-h-[90vh] flex flex-col">
+          <div className="relative bg-[#fdfbf7] w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-stone-200 z-10 animate-scale-up max-h-[90vh] flex flex-col my-auto">
             
             {/* Header */}
             <div className="p-5 border-b border-stone-200/60 bg-white flex items-center justify-between">
@@ -1844,7 +1861,9 @@ export default function App() {
               </div>
               <button 
                 onClick={() => setCheckoutOpen(false)} 
-                className="p-1.5 rounded-lg hover:bg-stone-100 text-stone-400 transition-colors cursor-pointer"
+                className="p-2 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 transition-all cursor-pointer font-black flex items-center justify-center active:scale-90"
+                aria-label="Close checkout modal"
+                title="Close (X)"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -2092,13 +2111,20 @@ export default function App() {
             </div>
 
             {/* Footer submit button */}
-            <div className="p-5.5 border-t border-stone-200/60 bg-white">
+            <div className="p-4 sm:p-5.5 border-t border-stone-200/60 bg-white flex items-center gap-2.5">
+              <button
+                onClick={() => setCheckoutOpen(false)}
+                className="bg-stone-100 hover:bg-stone-200 text-stone-700 font-extrabold text-xs px-4 py-4 rounded-2xl transition-all flex items-center gap-1 shrink-0 cursor-pointer"
+              >
+                <X className="w-4 h-4 text-stone-500" />
+                <span>Close</span>
+              </button>
               <button
                 onClick={handleConfirmOrder}
-                className="w-full bg-[#111e47] hover:bg-[#0c1634] active:scale-95 text-white font-black text-xs py-4 rounded-2xl tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-blue-900/10 cursor-pointer"
+                className="flex-1 bg-[#111e47] hover:bg-[#0c1634] active:scale-95 text-white font-black text-xs py-4 rounded-2xl tracking-wider flex items-center justify-center gap-2 transition-all shadow-xl shadow-blue-900/10 cursor-pointer"
               >
                 <MessageSquare className="w-4 h-4" />
-                <span>Confirm & Send Order on WhatsApp</span>
+                <span>Confirm & Send Order</span>
               </button>
             </div>
 
