@@ -196,8 +196,10 @@ export default function AdminDashboard({
     runDiagnostics();
   }, [products]);
 
-  // Handle Direct Image File Upload from Gallery/Computer
-  const handleImageFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+
+  // Handle Direct Image File Upload from Gallery/Computer with Live Server Upload
+  const handleImageFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -206,17 +208,34 @@ export default function AdminDashboard({
       return;
     }
 
-    // Limit file size to ~3MB before encoding to keep localStorage safe
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Image size bohat bara hai. Baraye meherbani 5MB se choti picture select karain!");
+    if (file.size > 10 * 1024 * 1024) {
+      alert("Image size bohat bara hai. Baraye meherbani 10MB se choti picture select karain!");
       return;
     }
 
+    setIsUploadingImage(true);
     const reader = new FileReader();
-    reader.onload = (event) => {
+    reader.onload = async (event) => {
       const dataUrl = event.target?.result as string;
       if (dataUrl) {
         setFormData(prev => ({ ...prev, image: dataUrl }));
+        try {
+          const res = await fetch('/api/upload-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ imageBase64: dataUrl, filename: file.name })
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data.url) {
+              setFormData(prev => ({ ...prev, image: data.url }));
+            }
+          }
+        } catch (err) {
+          console.warn("Could not save to /api/upload-image, keeping base64 DataURL", err);
+        } finally {
+          setIsUploadingImage(false);
+        }
       }
     };
     reader.readAsDataURL(file);
@@ -768,12 +787,22 @@ export default function AdminDashboard({
                       </div>
 
                       {/* Direct File Picker Button */}
-                      <label className="cursor-pointer bg-pink-600 hover:bg-pink-700 active:scale-95 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all self-start sm:self-auto shrink-0">
-                        <Upload className="w-4 h-4" />
-                        <span>📷 Upload Photo From Gallery / Mobile</span>
+                      <label className={`cursor-pointer ${isUploadingImage ? 'bg-stone-400 cursor-not-allowed' : 'bg-pink-600 hover:bg-pink-700 active:scale-95'} text-white font-extrabold text-xs px-4 py-2.5 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all self-start sm:self-auto shrink-0`}>
+                        {isUploadingImage ? (
+                          <>
+                            <RefreshCw className="w-4 h-4 animate-spin" />
+                            <span>Uploading to Server...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Upload className="w-4 h-4" />
+                            <span>📷 Upload Photo From Gallery / Mobile</span>
+                          </>
+                        )}
                         <input
                           type="file"
                           accept="image/*"
+                          disabled={isUploadingImage}
                           onChange={handleImageFileUpload}
                           className="hidden"
                         />

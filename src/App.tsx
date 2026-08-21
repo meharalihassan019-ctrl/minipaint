@@ -270,10 +270,11 @@ interface RichProductDetail {
   mixedNote?: string;
 }
 
-function getProductDetails(id: string): RichProductDetail {
+function getProductDetails(id: string, dynamicProduct?: Product): RichProductDetail {
+  let baseDetail: RichProductDetail;
   switch (id) {
     case "prod-name-kit":
-      return {
+      baseDetail = {
         title: "Custom Name Painting Kit",
         price: 399,
         image: customNameKitImg,
@@ -289,8 +290,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Enter your desired name in the checkout form or send it via WhatsApp after placing your order."
         ]
       };
+      break;
     case "prod-small-ceramic-toy":
-      return {
+      baseDetail = {
         title: "Small Ceramic Toy 🧸",
         price: 10,
         image: smallCeramicToyImg,
@@ -306,8 +308,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Available in various cute designs (star, car, mini figures)."
         ]
       };
+      break;
     case "prod-medium-kit":
-      return {
+      baseDetail = {
         title: "Medium Painting Kit 🎨",
         price: 299,
         image: mediumPaintKitPackImg,
@@ -325,8 +328,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Non-toxic, ultra-washable kids paint strip included."
         ]
       };
+      break;
     case "prod-small-kit":
-      return {
+      baseDetail = {
         title: "Small Painting Kit 🎨",
         price: 199,
         image: smallPaintKitImg,
@@ -345,8 +349,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Washes off skin and clothes with warm water instantly."
         ]
       };
+      break;
     case "prod-large-kit":
-      return {
+      baseDetail = {
         title: "Large Painting Kit 🎨",
         price: 399,
         image: largePaintKitImg,
@@ -362,8 +367,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Comes with high-capacity non-toxic paint strips."
         ]
       };
+      break;
     case "prod-paint-strip":
-      return {
+      baseDetail = {
         title: "Extra 6 Color Paint Strip",
         price: 80,
         image: extraPaintStripImg,
@@ -377,8 +383,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Perfect as a refill or extra set."
         ]
       };
+      break;
     case "prod-extra-brush":
-      return {
+      baseDetail = {
         title: "Painting Brush 🖌️",
         price: 50,
         image: paintingBrushImg,
@@ -393,8 +400,9 @@ function getProductDetails(id: string): RichProductDetail {
           "Perfect as a replacement or extra brush for creative fun."
         ]
       };
+      break;
     case "prod-extra-medium-toy":
-      return {
+      baseDetail = {
         title: "1 Extra Toy (Medium Size)",
         price: 10,
         image: extraMediumToyImg,
@@ -408,8 +416,9 @@ function getProductDetails(id: string): RichProductDetail {
           "100% dust-free and ready to color."
         ]
       };
+      break;
     case "prod-extra-big-toy":
-      return {
+      baseDetail = {
         title: "Big Ceramic Toy 🧸",
         price: 15,
         image: bigCeramicToyImg,
@@ -425,16 +434,31 @@ function getProductDetails(id: string): RichProductDetail {
           "Designs include teddy bear with balloons, burger, donut and more."
         ]
       };
+      break;
     default:
-      return {
-        title: "Creative Painting Item",
-        price: 0,
-        image: "🎨",
-        desc: "High-quality premium craft and paint supplies for endless fun and creativity.",
+      baseDetail = {
+        title: dynamicProduct?.name || "Creative Painting Item",
+        price: dynamicProduct?.price || 0,
+        image: dynamicProduct?.image || "🎨",
+        desc: dynamicProduct?.description || "High-quality premium craft and paint supplies for endless fun and creativity.",
         included: ["1 Premium Item"],
         notes: ["Washes off easily and 100% safe."]
       };
+      break;
   }
+
+  // If dynamic product was modified in Admin, apply live values
+  if (dynamicProduct) {
+    return {
+      ...baseDetail,
+      title: dynamicProduct.name || baseDetail.title,
+      price: dynamicProduct.price !== undefined ? dynamicProduct.price : baseDetail.price,
+      image: dynamicProduct.image || baseDetail.image,
+      desc: dynamicProduct.description || baseDetail.desc,
+    };
+  }
+
+  return baseDetail;
 }
 
 // --- TEMPLATES FOR KIDS STUDIO ---
@@ -726,14 +750,79 @@ export default function App() {
     return PRODUCTS;
   });
 
+  // Sync Live Products & Store Settings with Backend Server on Mount and Interval
+  useEffect(() => {
+    const fetchLiveCatalog = async () => {
+      try {
+        const [prodRes, setRes] = await Promise.all([
+          fetch('/api/products').then(r => r.ok ? r.json() : null).catch(() => null),
+          fetch('/api/settings').then(r => r.ok ? r.json() : null).catch(() => null),
+        ]);
+
+        if (prodRes && prodRes.success && Array.isArray(prodRes.products) && prodRes.products.length > 0) {
+          setProductList(prodRes.products);
+          try {
+            localStorage.setItem("mini_paint_products_v4", JSON.stringify(prodRes.products));
+          } catch (e) {}
+        }
+
+        if (setRes && setRes.success && setRes.settings) {
+          if (setRes.settings.storePhone) setStorePhone(setRes.settings.storePhone);
+          if (setRes.settings.announcement) setAnnouncementText(setRes.settings.announcement);
+        }
+      } catch (err) {
+        console.warn("Backend catalog sync notice:", err);
+      }
+    };
+
+    fetchLiveCatalog();
+
+    // Auto sync every 8 seconds so any price or image updates appear live across all browser tabs/mobiles
+    const syncInterval = setInterval(fetchLiveCatalog, 8000);
+    return () => clearInterval(syncInterval);
+  }, []);
+
   // Persist updated product list when changed in Admin Dashboard
-  const handleUpdateProducts = (updatedProducts: ProductItem[]) => {
+  const handleUpdateProducts = async (updatedProducts: ProductItem[]) => {
     setProductList(updatedProducts as Product[]);
     try {
       localStorage.setItem("mini_paint_products_v4", JSON.stringify(updatedProducts));
     } catch (e) {
       console.error("Failed to save products to localStorage", e);
     }
+
+    // Push to server so changes are live for all customers
+    try {
+      await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ products: updatedProducts })
+      });
+    } catch (err) {
+      console.error("Failed to update products on live server:", err);
+    }
+  };
+
+  const handleUpdateStorePhone = async (phone: string) => {
+    setStorePhone(phone);
+    try {
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ storePhone: phone })
+      });
+    } catch (e) {}
+  };
+
+  const handleUpdateAnnouncement = async (text: string) => {
+    setAnnouncementText(text);
+    try {
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ announcement: text })
+      });
+    } catch (e) {}
   };
 
   // CUSTOM STATES FOR USER-SPECIFIED EXPERIENCES
@@ -1517,9 +1606,9 @@ export default function App() {
           onUpdateProducts={handleUpdateProducts}
           onCloseAdmin={() => setIsAdminOpen(false)}
           storePhone={storePhone}
-          onUpdateStorePhone={setStorePhone}
+          onUpdateStorePhone={handleUpdateStorePhone}
           announcementText={announcementText}
-          onUpdateAnnouncement={setAnnouncementText}
+          onUpdateAnnouncement={handleUpdateAnnouncement}
         />
       ) : (
         <>
