@@ -1,0 +1,10 @@
+# Robots.txt for Mini Paint Station
+# Website: https://minipaintstation.shop/
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# Sitemap Location
+Sitemap: https://minipaintstation.shop/sitemap.xml

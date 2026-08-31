@@ -384,6 +384,26 @@ async function startServer() {
     }
   });
 
+  // SEO: Direct sitemap.xml route
+  app.get('/sitemap.xml', (req, res) => {
+    const sitemapPath = path.join(process.cwd(), 'public', 'sitemap.xml');
+    if (fs.existsSync(sitemapPath)) {
+      res.header('Content-Type', 'application/xml');
+      return res.sendFile(sitemapPath);
+    }
+    res.status(404).send('Sitemap not found');
+  });
+
+  // SEO: Direct robots.txt route
+  app.get('/robots.txt', (req, res) => {
+    const robotsPath = path.join(process.cwd(), 'public', 'robots.txt');
+    if (fs.existsSync(robotsPath)) {
+      res.header('Content-Type', 'text/plain');
+      return res.sendFile(robotsPath);
+    }
+    res.status(404).send('Robots.txt not found');
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
