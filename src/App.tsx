@@ -37,7 +37,9 @@ import {
   ThumbsUp,
   User,
   HeartCrack,
-  HelpCircle
+  HelpCircle,
+  Gamepad2,
+  Play
 } from "lucide-react";
 
 // --- PRODUCT IMAGE IMPORTS (Vite bundled assets) ---
@@ -51,13 +53,14 @@ import largePaintKitImg from "./assets/images/large_paint_kit_1784717515804.jpg"
 import smallPaintKitImg from "./assets/images/small_paint_kit_1784717498828.jpg";
 import bigCeramicToyImg from "./assets/images/big_ceramic_toy_15_1784789245573.jpg";
 
-// --- ADMIN DASHBOARD INTEGRATION ---
+// --- ADMIN DASHBOARD & STUDIO INTEGRATION ---
 import AdminDashboard, { ProductItem } from "./components/AdminDashboard";
 import { Toy3DStudio } from "./components/Toy3DStudio";
 import { FooterSection } from "./components/FooterSection";
+import { KidsGameZone } from "./components/KidsGameZone";
 
 // --- TYPES ---
-type Tab = "home" | "products" | "studio" | "stencil" | "resources" | "contact";
+type Tab = "home" | "products" | "games" | "studio" | "stencil" | "resources" | "contact";
 type Tool = "brush" | "bucket" | "stamp" | "eraser";
 type StampType = "star" | "heart" | "smile" | "crown" | "butterfly";
 
@@ -1644,11 +1647,12 @@ export default function App() {
             </div>
           </div>
 
-          {/* Navigation Links (Matches screenshot options) */}
+          {/* Navigation Links (Desktop Menu with prominent Kids Games Zone) */}
           <nav className="hidden md:flex items-center gap-1.5 bg-stone-100/70 p-1 rounded-2xl border border-stone-200/50">
             {[
               { id: "home", label: "Home" },
               { id: "products", label: "Products" },
+              { id: "games", label: "Kids Games 🎮", isSpecial: true },
               { id: "studio", label: "Kids Studio 🎨" },
               { id: "stencil", label: "AI Stencil Maker 🤖" },
               { id: "resources", label: "Parent Resources" },
@@ -1657,9 +1661,13 @@ export default function App() {
               <button
                 key={tab.id}
                 onClick={() => setCurrentTab(tab.id as Tab)}
-                className={`px-4.5 py-2 text-xs font-bold tracking-tight rounded-xl transition-all ${
+                className={`px-4 py-2 text-xs font-bold tracking-tight rounded-xl transition-all cursor-pointer ${
                   currentTab === tab.id
-                    ? "bg-white text-pink-600 shadow-sm border border-stone-200/40"
+                    ? tab.isSpecial 
+                      ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-md font-black scale-102"
+                      : "bg-white text-pink-600 shadow-sm border border-stone-200/40"
+                    : tab.isSpecial
+                    ? "bg-pink-50 text-pink-600 border border-pink-200/60 hover:bg-pink-100 font-extrabold"
                     : "text-stone-500 hover:text-stone-900"
                 }`}
               >
@@ -1671,7 +1679,7 @@ export default function App() {
           {/* Cart Icon & Count Badge (Pink button in screenshot) */}
           <button 
             onClick={() => setCartOpen(true)}
-            className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black text-xs px-5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-md shadow-pink-500/15 transition-all"
+            className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black text-xs px-5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-md shadow-pink-500/15 transition-all cursor-pointer"
           >
             <ShoppingBag className="w-4 h-4 text-white" />
             <span>Cart</span>
@@ -1680,6 +1688,35 @@ export default function App() {
             </span>
           </button>
 
+        </div>
+
+        {/* Mobile Horizontal Navigation Scroll Bar */}
+        <div className="md:hidden mt-2.5 pt-2 border-t border-rose-100/60 overflow-x-auto flex items-center gap-1.5 pb-1 no-scrollbar">
+          {[
+            { id: "home", label: "Home" },
+            { id: "products", label: "Products" },
+            { id: "games", label: "Kids Games 🎮", isSpecial: true },
+            { id: "studio", label: "Studio 🎨" },
+            { id: "stencil", label: "AI Stencil 🤖" },
+            { id: "resources", label: "Resources" },
+            { id: "contact", label: "Contact" }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setCurrentTab(tab.id as Tab)}
+              className={`px-3 py-1.5 text-xs font-bold whitespace-nowrap rounded-xl transition-all shrink-0 ${
+                currentTab === tab.id
+                  ? tab.isSpecial
+                    ? "bg-gradient-to-r from-pink-500 to-rose-500 text-white shadow-xs font-black"
+                    : "bg-pink-500 text-white shadow-xs"
+                  : tab.isSpecial
+                  ? "bg-pink-50 text-pink-700 border border-pink-200"
+                  : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </header>
 
@@ -2254,21 +2291,29 @@ export default function App() {
                 </p>
 
                 {/* Buttons Navigation */}
-                <div className="flex flex-wrap items-center gap-4">
+                <div className="flex flex-wrap items-center gap-3">
                   <button 
                     onClick={() => setCurrentTab("products")}
-                    className="bg-[#111e47] hover:bg-[#0c1634] active:scale-95 text-white font-extrabold text-xs tracking-wider px-7 py-4 rounded-2xl flex items-center gap-2 shadow-lg shadow-blue-900/10 transition-all"
+                    className="bg-[#111e47] hover:bg-[#0c1634] active:scale-95 text-white font-extrabold text-xs tracking-wider px-6 py-4 rounded-2xl flex items-center gap-2 shadow-lg shadow-blue-900/10 transition-all cursor-pointer"
                   >
                     <span>Shop Kits</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
+
+                  <button 
+                    onClick={() => setCurrentTab("games")}
+                    className="bg-gradient-to-r from-pink-500 via-rose-500 to-amber-500 hover:from-pink-600 hover:to-amber-600 active:scale-95 text-white font-black text-xs tracking-wider px-6 py-4 rounded-2xl flex items-center gap-2 shadow-lg shadow-pink-500/20 transition-all cursor-pointer animate-pulse"
+                  >
+                    <Gamepad2 className="w-4 h-4 text-white" />
+                    <span>Play Kids Games 🎮</span>
+                  </button>
                   
                   <button 
                     onClick={() => triggerWhatsAppQuery("Hi Mini Paint Station, I'd like to ask a question about your custom kits.")}
-                    className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-extrabold text-xs tracking-wider px-7 py-4 rounded-2xl flex items-center gap-2 shadow-lg shadow-pink-500/10 transition-all"
+                    className="bg-stone-100 hover:bg-stone-200 active:scale-95 text-stone-800 font-extrabold text-xs tracking-wider px-5 py-4 rounded-2xl flex items-center gap-2 border border-stone-200/80 transition-all cursor-pointer"
                   >
-                    <MessageSquare className="w-4 h-4" />
-                    <span>WhatsApp Us</span>
+                    <MessageSquare className="w-4 h-4 text-emerald-600" />
+                    <span>WhatsApp</span>
                   </button>
                 </div>
 
@@ -2400,6 +2445,40 @@ export default function App() {
                   triggerWhatsAppQuery(`Hi Mini Paint Station! I designed a custom 3D ${toyName} figurine with colors (${colors.join(", ")}). I would like to order this 3D kit!`);
                 }} 
               />
+            </div>
+
+            {/* KIDS GAME ZONE SHOWCASE BANNER */}
+            <div className="bg-gradient-to-r from-purple-700 via-pink-600 to-amber-500 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden">
+              <div className="absolute right-0 bottom-0 opacity-10 text-9xl pointer-events-none select-none">
+                🎮🎈🧺🧠
+              </div>
+
+              <div className="space-y-3 text-center lg:text-left relative z-10">
+                <div className="inline-flex items-center gap-1.5 bg-white/20 px-3.5 py-1 rounded-full text-xs font-black">
+                  <Gamepad2 className="w-4 h-4 text-yellow-300 animate-pulse" />
+                  <span>100% Free Interactive Kids Play Zone</span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black tracking-tight">
+                  Keep Kids Happy & Away From Social Media! 🎮✨
+                </h3>
+                <p className="text-xs sm:text-sm text-pink-100 max-w-xl font-medium leading-relaxed">
+                  Engage children with our wholesome live games: Balloon Color Pop, Paint Catcher, Ceramic Memory Match, and 3D Pottery Sculpting!
+                </p>
+                <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
+                  <span className="bg-black/20 px-3 py-1 rounded-xl text-[11px] font-bold">🎈 Balloon Pop</span>
+                  <span className="bg-black/20 px-3 py-1 rounded-xl text-[11px] font-bold">🧺 Paint Catcher</span>
+                  <span className="bg-black/20 px-3 py-1 rounded-xl text-[11px] font-bold">🧠 Memory Cards</span>
+                  <span className="bg-black/20 px-3 py-1 rounded-xl text-[11px] font-bold">🏺 Clay Sculptor</span>
+                </div>
+              </div>
+
+              <button
+                onClick={() => setCurrentTab("games")}
+                className="bg-white text-stone-900 hover:bg-stone-100 active:scale-95 font-black text-xs sm:text-sm px-8 py-4.5 rounded-2xl flex items-center gap-2.5 shadow-2xl transition-all shrink-0 cursor-pointer z-10"
+              >
+                <Play className="w-4 h-4 text-pink-600 fill-pink-600" />
+                <span>Play Live Games Now</span>
+              </button>
             </div>
 
             {/* PRODUCT CATEGORIES / DISCOVERY CARDS */}
@@ -2549,6 +2628,18 @@ export default function App() {
               {productList.filter(p => selectedProductCategory === "all" || p.category === selectedProductCategory).map((product) => renderProductCard(product))}
             </div>
           </div>
+        )}
+
+
+        {/* ================= KIDS GAME ZONE VIEW ================= */}
+        {currentTab === "games" && (
+          <KidsGameZone 
+            onNavigateToShop={() => setCurrentTab("products")}
+            triggerToast={triggerToast}
+            onOrderKit={(toyName, colors) => {
+              triggerWhatsAppQuery(`Hi Mini Paint Station! I designed a custom 3D ${toyName} with colors (${colors.join(", ")}). I'd like to order this painting kit!`);
+            }}
+          />
         )}
 
 
