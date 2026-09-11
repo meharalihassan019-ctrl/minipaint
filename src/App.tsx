@@ -58,6 +58,8 @@ import AdminDashboard, { ProductItem } from "./components/AdminDashboard";
 import { Toy3DStudio } from "./components/Toy3DStudio";
 import { FooterSection } from "./components/FooterSection";
 import { KidsGameZone } from "./components/KidsGameZone";
+import { ParentResources } from "./components/ParentResources";
+import { TestimonialsSection } from "./components/TestimonialsSection";
 
 // --- TYPES ---
 type Tab = "home" | "products" | "games" | "studio" | "stencil" | "resources" | "contact";
@@ -266,6 +268,8 @@ interface RichProductDetail {
   price: number;
   image: string;
   desc: string;
+  urduDesc?: string;
+  ageSuitability?: string;
   included: string[];
   notes: string[];
   shortHeading?: string;
@@ -282,10 +286,13 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         price: 399,
         image: customNameKitImg,
         desc: "Create a one-of-a-kind masterpiece with a personalized ceramic name made just for you. Paint, decorate, and customize your name using the included colors to create a unique keepsake that's fun to make and beautiful to display. Perfect for kids, birthday gifts, room décor, return gifts, and creative activities.",
+        urduDesc: "اپنے بچے کے نام کے پلاسٹر حروف اور خوبصورت کارٹون کھلونا۔ سالگرہ کے تحفے اور بیڈ روم ڈیکوریشن کے لیے شاندار کٹ۔",
+        ageSuitability: "Ages 3+ & All Kids",
         included: [
           "Custom Ceramic Name (8-12 Letters)",
-          "6 Vibrant Paint Colours",
-          "1 Paint Brush"
+          "6 Vibrant Washable Paint Colours",
+          "1 Fine Detail Artist Paint Brush",
+          "Display Base / Standing Keepsake"
         ],
         notes: [
           "Price applies to names with 8-12 letters only.",
@@ -301,9 +308,11 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         image: smallCeramicToyImg,
         shortHeading: "Small Ceramic Toy – Rs 10 🧸",
         desc: "A cute small unpainted ceramic toy figurine ready to be painted. Perfect for kids, party favors, birthday return gifts, classroom activities, and screen-free creative fun.",
+        urduDesc: "چھوٹا ان پینٹڈ پلاسٹر کھلونا صرف 10 روپے۔ اسکول کی سرگرمیوں، پارٹی فیورز اور گفٹس کے لیے بہترین۔",
+        ageSuitability: "Ages 3+",
         included: [
           "1 Small Ceramic Toy Figurine",
-          "Smooth Edges & Dust Free"
+          "Smooth Edges & Dust Free Medical Plaster"
         ],
         whatsapp: "0310-6541965",
         notes: [
@@ -319,11 +328,13 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         image: mediumPaintKitPackImg,
         shortHeading: "Medium Paint & Play Kit 🎨",
         desc: "A fun and creative DIY painting kit for kids. Paint, decorate, and personalize your favourite ceramic toys while developing creativity and imagination. Perfect for birthdays, gifts, family activities, classrooms, and screen-free fun.",
+        urduDesc: "بچوں کے لیے 9 پلاسٹر کھلونوں، 6 واش ایبل کلرز اور برش کے ساتھ سب سے زیادہ مقبول پینٹنگ کٹ۔ 100% محفوظ۔",
+        ageSuitability: "Ages 3 to 10",
         included: [
-          "5 Large Ceramic Toys",
-          "4 Small Ceramic Toys",
-          "6 Vibrant Paint Colours",
-          "1 Paint Brush"
+          "5 Large Handcrafted Ceramic Toys",
+          "4 Cute Small Ceramic Toys",
+          "6 Vibrant Washable Organic Paint Colours",
+          "1 Artist Paint Brush"
         ],
         whatsapp: "0310-6541965",
         notes: [
@@ -339,10 +350,12 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         image: smallPaintKitImg,
         shortHeading: "Mini Paint Station – Paint & Play Kit 🎨",
         desc: "A fun DIY painting kit that inspires creativity and imaginative play. Perfect for gifts, birthdays, classrooms, family activities, and screen-free fun.",
+        urduDesc: "نئے تخلیق کاروں کے لیے بہترین اسٹارٹر پیک جس میں 4 پلاسٹر کھلونے، 3 واش ایبل رنگ اور برش شامل ہیں۔",
+        ageSuitability: "Ages 3 to 6",
         included: [
           "2 Large Ceramic Toys",
           "2 Small Ceramic Toys",
-          "3 Paint Colours",
+          "3 Vibrant Washable Paint Colours",
           "1 Paint Brush"
         ],
         whatsapp: "0310-6541965",
@@ -359,11 +372,13 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         price: 399,
         image: largePaintKitImg,
         desc: "A complete creative painting kit packed with 14 ceramic toys for hours of fun and imagination. Kids can paint, decorate, and personalize their favorite designs while developing creativity and fine motor skills. Perfect for birthdays, gifts, family activities, classrooms, and screen-free play.",
+        urduDesc: "پورے خاندان اور بہن بھائیوں کے لیے 14 کھلونوں، 12 واش ایبل رنگوں اور 2 برشز پر مشتمل سب سے بڑا پیک۔",
+        ageSuitability: "Ages 3 to 12 (Family Pack)",
         included: [
           "9 Large Ceramic Toys",
           "5 Small Ceramic Toys",
-          "12 Vibrant Paint Colours",
-          "1 Paint Brush"
+          "12 Vibrant Paint Colours (Double Strip)",
+          "1 Fine Detail Paint Brush"
         ],
         notes: [
           "The most complete set, great for group sessions and siblings.",
@@ -377,9 +392,11 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         price: 80,
         image: extraPaintStripImg,
         desc: "Bright, smooth, and easy-to-use paints for ceramic toys, alphabet sets, and DIY crafts. Need extra paint or some new shades for your craft project? Our extra six-color paint strip has high-coverage pots.",
+        urduDesc: "6 روشن واش ایبل واٹر کلرز کی اسٹرپ۔ کپڑوں اور ہاتھوں سے بغیر کسی صابن کے آسانی سے دھل جاتی ہے۔",
+        ageSuitability: "All Ages",
         included: [
           "6 Vibrant Paint Colours",
-          "3ml in Each Pot"
+          "3ml in Each Pot (Safe Washable Formula)"
         ],
         notes: [
           "Super washable formula - mess free!",
@@ -394,6 +411,8 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         image: paintingBrushImg,
         shortHeading: "Painting Brush 🖌️",
         desc: "A high-quality paint brush designed for ceramic painting, DIY crafts, and detailed creative projects. Easy to hold, smooth to use, and perfect for detailed artwork.",
+        urduDesc: "باریک فنشنگ اور پینٹنگ کے لیے خاص ڈیزائن کردہ پریمیم آرٹ برش۔",
+        ageSuitability: "All Ages",
         included: [
           "1 Fine Detail Painting Brush"
         ],
@@ -410,6 +429,8 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         price: 10,
         image: extraMediumToyImg,
         desc: "Perfect for creative play, school activities, party favors, gifts, and DIY painting projects. Each ceramic toy is made from high-quality material and is ready to be painted.",
+        urduDesc: "ایک درمیانہ پلاسٹر کھلونا۔ کلیکشن میں اضافہ کرنے یا پارٹی کے لیے بہترین۔",
+        ageSuitability: "Ages 3+",
         included: [
           "1 Small/Medium Ceramic Toy",
           "Ready to Paint & Decorate"
@@ -427,6 +448,8 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         image: bigCeramicToyImg,
         shortHeading: "Big Ceramic Toy – Rs 15 🧸",
         desc: "Single high-quality large ceramic toy figurine (teddy bear with balloons, burger, donut). Adds extra scale and fun to your child's coloring adventures.",
+        urduDesc: "بڑا پلاسٹر کھلونا (ٹیڈی بیئر، برگر، ڈونٹ) صرف 15 روپے۔ شاندار سائز اور ڈیٹیل۔",
+        ageSuitability: "Ages 3+",
         included: [
           "1 Large Ceramic Toy Figurine",
           "Smooth Edges & Dust-Free Finish"
@@ -444,6 +467,8 @@ function getProductDetails(id: string, dynamicProduct?: Product): RichProductDet
         price: dynamicProduct?.price || 0,
         image: dynamicProduct?.image || "🎨",
         desc: dynamicProduct?.description || "High-quality premium craft and paint supplies for endless fun and creativity.",
+        urduDesc: "بچوں کی تخلیقی صلاحیتوں کے لیے بہترین اور معیاری پینٹنگ کا سامان۔",
+        ageSuitability: "Ages 3+",
         included: ["1 Premium Item"],
         notes: ["Washes off easily and 100% safe."]
       };
@@ -715,15 +740,28 @@ export default function App() {
   const [announcementText, setAnnouncementText] = useState("🎉 Free Paint Brush on orders above Rs. 1000!");
   const [footerSecretClicks, setFooterSecretClicks] = useState(0);
 
-  // Secret shortcut & URL trigger to access admin (#admin or Ctrl+Shift+A)
+  // Secret shortcut & URL trigger to access admin (#admin or Ctrl+Shift+A) & SEO hash routing
   useEffect(() => {
-    const checkAdminTrigger = () => {
-      if (window.location.hash === "#admin" || window.location.search.includes("admin")) {
+    const handleUrlRouting = () => {
+      const hash = window.location.hash.toLowerCase();
+      if (hash === "#admin" || window.location.search.includes("admin")) {
         setIsAdminOpen(true);
+      } else if (hash === "#products" || hash === "#shop") {
+        setCurrentTab("products");
+      } else if (hash === "#kids-games" || hash === "#games") {
+        setCurrentTab("games");
+      } else if (hash === "#studio") {
+        setCurrentTab("studio");
+      } else if (hash === "#ai-stencil" || hash === "#stencil") {
+        setCurrentTab("stencil");
+      } else if (hash === "#resources" || hash === "#blog") {
+        setCurrentTab("resources");
+      } else if (hash === "#contact") {
+        setCurrentTab("contact");
       }
     };
-    checkAdminTrigger();
-    window.addEventListener("hashchange", checkAdminTrigger);
+    handleUrlRouting();
+    window.addEventListener("hashchange", handleUrlRouting);
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "A" || e.key === "a")) {
@@ -734,10 +772,68 @@ export default function App() {
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
-      window.removeEventListener("hashchange", checkAdminTrigger);
+      window.removeEventListener("hashchange", handleUrlRouting);
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
+
+  // SEO: Dynamic Page Titles, Meta Descriptions, and URL Hash Syncing per Tab
+  useEffect(() => {
+    const metaMap: Record<Tab, { title: string; desc: string; hash: string }> = {
+      home: {
+        title: "Mini Paint Station | Kids Plaster Art Kits & Games Pakistan",
+        desc: "Buy non-toxic handcrafted plaster painting kits, ceramic toys & play interactive kids games at Mini Paint Station Sahiwal. Cash on Delivery across Pakistan.",
+        hash: ""
+      },
+      products: {
+        title: "Buy Kids Plaster Painting Kits & Ceramic Toys Pakistan | Mini Paint Station",
+        desc: "Order non-toxic DIY plaster painting kits, custom alphabet name sets & ceramic toys. Perfect birthday gifts & return gifts under Rs. 500 with COD across Pakistan.",
+        hash: "#products"
+      },
+      games: {
+        title: "Free Kids Games Online & 3D Clay Sculptor | Mini Paint Station",
+        desc: "Play free educational online games for kids: Balloon Color Pop, Paint Drop Catcher, Toy Memory Match & 3D Clay Pottery Sculptor. Safe, ad-free & screen-free inspired.",
+        hash: "#kids-games"
+      },
+      studio: {
+        title: "Kids 3D Toy Studio & Virtual Painting Canvas | Mini Paint Station",
+        desc: "Interactive 3D ceramic figurine painter and digital coloring studio. Pick outlines, paint with brushes and stickers, or order your custom physical kit on WhatsApp.",
+        hash: "#studio"
+      },
+      stencil: {
+        title: "AI Coloring Stencil Maker & Printable Outlines | Mini Paint Station",
+        desc: "Generate custom coloring stencils and cartoon art outlines for children with AI. Download free printables or paint directly in our interactive sketchpad.",
+        hash: "#ai-stencil"
+      },
+      resources: {
+        title: "Parent Resources & Screen-Free Activity Guides Pakistan | Mini Paint Station",
+        desc: "Expert parenting guides: How to paint plaster toys at home, best return gifts under Rs. 500 in Pakistan, screen-free toddler activities, and non-toxic paint safety.",
+        hash: "#resources"
+      },
+      contact: {
+        title: "Contact Mini Paint Station Sahiwal | WhatsApp Orders & Delivery Pakistan",
+        desc: "Get in touch with Mini Paint Station in Sahiwal City, Punjab. WhatsApp 0310-6541965 for custom birthday kits, wholesale preschool supplies, and Cash on Delivery.",
+        hash: "#contact"
+      }
+    };
+
+    const target = metaMap[currentTab];
+    if (target) {
+      document.title = target.title;
+      const metaDesc = document.querySelector('meta[name="description"]');
+      if (metaDesc) metaDesc.setAttribute("content", target.desc);
+      const ogTitle = document.querySelector('meta[property="og:title"]');
+      if (ogTitle) ogTitle.setAttribute("content", target.title);
+      const ogDesc = document.querySelector('meta[property="og:description"]');
+      if (ogDesc) ogDesc.setAttribute("content", target.desc);
+
+      if (target.hash && window.location.hash !== target.hash) {
+        window.history.replaceState(null, "", target.hash);
+      } else if (!target.hash && window.location.hash && window.location.hash !== "#admin") {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+    }
+  }, [currentTab]);
   
   // DYNAMIC PRODUCTS LIST STATE
   const [productList, setProductList] = useState<Product[]>(() => {
@@ -1639,7 +1735,7 @@ export default function App() {
             </div>
             <div>
               <h2 className="text-lg font-black tracking-tight text-stone-900 leading-none">
-                minipaint<span className="text-pink-500">station</span><span className="text-stone-400">.com</span>
+                minipaint<span className="text-pink-500">station</span><span className="text-pink-500 font-bold">.shop</span>
               </h2>
               <span className="text-[10px] font-extrabold tracking-widest text-stone-400 uppercase">
                 Mini Paint Station
@@ -1742,6 +1838,36 @@ export default function App() {
                 >
                   <X className="w-5 h-5" />
                 </button>
+              </div>
+
+              {/* FREE BRUSH PROGRESS BAR */}
+              <div className={`mt-3 p-3 rounded-2xl border transition-all text-xs ${
+                getCartTotal() >= 1000 
+                  ? 'bg-emerald-50 border-emerald-200 text-emerald-800' 
+                  : 'bg-amber-50 border-amber-200 text-amber-900'
+              }`}>
+                <div className="flex items-center justify-between font-extrabold mb-1.5">
+                  <span className="flex items-center gap-1.5">
+                    <span>🎁</span>
+                    <span>{getCartTotal() >= 1000 ? "FREE Paint Brush & Palette Unlocked!" : "Free Paint Brush Offer"}</span>
+                  </span>
+                  <span className="text-[10px] font-bold">
+                    {getCartTotal() >= 1000 ? "UNLOCKED 🎉" : `Rs. ${getCartTotal()}/1000`}
+                  </span>
+                </div>
+                <div className="w-full bg-stone-200/80 rounded-full h-2 overflow-hidden">
+                  <div 
+                    className={`h-full transition-all duration-500 rounded-full ${
+                      getCartTotal() >= 1000 ? "bg-emerald-500" : "bg-amber-500"
+                    }`}
+                    style={{ width: `${Math.min(100, (getCartTotal() / 1000) * 100)}%` }}
+                  />
+                </div>
+                <p className="text-[10px] font-medium mt-1.5 opacity-90 leading-tight">
+                  {getCartTotal() >= 1000
+                    ? "🎉 Awesome! A free fine detail paint brush & mixing palette will be added to your order."
+                    : `Add Rs. ${1000 - getCartTotal()} more to your order to unlock a FREE paint brush & palette!`}
+                </p>
               </div>
 
               {/* Items list */}
@@ -1866,14 +1992,29 @@ export default function App() {
               <div className="md:w-1/2 p-6 flex flex-col justify-between space-y-6 overflow-y-auto max-h-[75vh] md:max-h-none">
                 <div className="space-y-4">
                   <div>
-                    <span className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
-                      {selectedProductForDetail.category === "plaster" ? "Painting Kit" : selectedProductForDetail.category.toUpperCase()}
-                    </span>
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <span className="text-[10px] font-black uppercase text-pink-600 bg-pink-50 px-2 py-0.5 rounded-md border border-pink-100">
+                        {selectedProductForDetail.category === "plaster" ? "3D Plaster Painting Kit" : selectedProductForDetail.category.toUpperCase()}
+                      </span>
+                      {detail.ageSuitability && (
+                        <span className="text-[10px] font-extrabold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-md border border-blue-100">
+                          👶 {detail.ageSuitability}
+                        </span>
+                      )}
+                      <span className="text-[10px] font-extrabold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
+                        🇵🇰 Cash on Delivery
+                      </span>
+                    </div>
+
                     <h3 className="text-xl font-black text-[#111e47] leading-tight pr-8">
                       {selectedProductForDetail.name}
                     </h3>
-                    <div className="flex items-center gap-1.5 mt-1 text-sm font-black text-pink-600">
-                      Rs. {selectedProductForDetail.price}
+
+                    <div className="flex items-center gap-2 mt-1">
+                      <span className="text-lg font-black text-pink-600">Rs. {selectedProductForDetail.price}</span>
+                      <span className="text-[10px] text-stone-400 font-bold bg-stone-100 px-2 py-0.5 rounded-full">
+                        Non-Toxic & Child-Safe
+                      </span>
                     </div>
                   </div>
 
@@ -1883,11 +2024,20 @@ export default function App() {
                     </p>
                   )}
 
+                  {/* Urdu Summary for Pakistani Parents */}
+                  {detail.urduDesc && (
+                    <div className="bg-pink-50/50 border border-pink-100 p-2.5 rounded-xl">
+                      <p className="text-xs text-stone-700 font-arabic text-right leading-relaxed font-semibold" dir="rtl">
+                        {detail.urduDesc}
+                      </p>
+                    </div>
+                  )}
+
                   {/* Included Items List */}
                   {detail.included && detail.included.length > 0 && (
                     <div className="space-y-1.5">
                       <h4 className="text-[10px] font-black uppercase text-stone-400 tracking-wider">
-                        What's Included:
+                        Package Contents:
                       </h4>
                       <ul className="space-y-1">
                         {detail.included.map((inc, i) => (
@@ -1899,14 +2049,37 @@ export default function App() {
                     </div>
                   )}
 
-                  <p className="text-xs text-stone-500 leading-relaxed font-semibold">
+                  <p className="text-xs text-stone-600 leading-relaxed font-medium">
                     {detail.desc}
                   </p>
 
+                  {/* Free Brush Offer Banner inside Product Detail */}
+                  <div className="bg-amber-50 border border-amber-200/80 p-2.5 rounded-xl flex items-center gap-2 text-[11px] text-amber-900 font-bold">
+                    <span>🎁</span>
+                    <span>Free paint brush & palette included on all orders above Rs. 1000!</span>
+                  </div>
+
+                  {/* Try in 3D studio CTA */}
+                  {selectedProductForDetail.category === "plaster" && (
+                    <button
+                      onClick={() => {
+                        setSelectedProductForDetail(null);
+                        setCurrentTab("studio");
+                      }}
+                      className="w-full bg-stone-100 hover:bg-stone-200 text-[#111e47] text-xs font-bold py-2 rounded-xl border border-stone-250 flex items-center justify-center gap-1.5 transition-all cursor-pointer"
+                    >
+                      <Sparkles className="w-3.5 h-3.5 text-pink-500" />
+                      <span>Preview in 3D Toy Painting Studio</span>
+                    </button>
+                  )}
+
                   {detail.whatsapp && (
-                    <div className="text-xs text-stone-800 font-extrabold flex items-center gap-1.5 bg-stone-50 p-2.5 rounded-xl border border-stone-150">
-                      <span>📱</span>
-                      <span>WhatsApp: <a href={`https://wa.me/92${detail.whatsapp.replace(/[^0-9]/g, "")}`} target="_blank" rel="noreferrer" className="text-pink-600 hover:underline">{detail.whatsapp}</a></span>
+                    <div className="text-xs text-stone-800 font-extrabold flex items-center justify-between bg-stone-50 p-2.5 rounded-xl border border-stone-150">
+                      <span className="flex items-center gap-1.5">
+                        <span>📱</span>
+                        <span>WhatsApp: {detail.whatsapp}</span>
+                      </span>
+                      <span className="text-[10px] text-emerald-600 font-bold">Fast Reply Sahiwal</span>
                     </div>
                   )}
 
@@ -1934,19 +2107,25 @@ export default function App() {
                 </div>
 
                 {/* Bottom Actions */}
-                <div className="flex items-center justify-between border-t border-stone-100 pt-4 mt-2 gap-2">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between border-t border-stone-100 pt-4 mt-2 gap-2">
                   <div className="flex flex-col">
                     <span className="text-[10px] text-stone-400 font-bold">Total Price</span>
                     <span className="text-lg font-black text-pink-600">Rs. {selectedProductForDetail.price}</span>
                   </div>
+                  
                   <div className="flex items-center gap-2">
                     <button 
-                      onClick={() => setSelectedProductForDetail(null)}
-                      className="bg-stone-200 hover:bg-stone-300 text-stone-800 font-extrabold text-xs px-3.5 py-3 rounded-2xl transition-all cursor-pointer flex items-center gap-1"
+                      onClick={() => {
+                        const directMsg = `Hi Mini Paint Station! I would like to directly order "${selectedProductForDetail.name}" (Rs. ${selectedProductForDetail.price}). Please share delivery and payment details for Cash on Delivery.`;
+                        triggerWhatsAppQuery(directMsg);
+                      }}
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs px-3.5 py-3 rounded-2xl flex items-center gap-1.5 transition-all shadow-xs cursor-pointer"
+                      title="Direct order on WhatsApp"
                     >
-                      <X className="w-4 h-4 text-stone-600" />
-                      <span>Close</span>
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>Order on WA</span>
                     </button>
+                    
                     <button 
                       onClick={() => {
                         handleAddToCart(selectedProductForDetail);
@@ -2568,23 +2747,8 @@ export default function App() {
               </div>
             </div>
 
-            {/* TRUST TESTIMONIAL BLOCK */}
-            <div className="bg-gradient-to-br from-pink-500 to-rose-400 rounded-3xl p-8 lg:p-12 text-white relative overflow-hidden">
-              <div className="absolute right-0 bottom-0 opacity-10 text-9xl pointer-events-none select-none">
-                🧸🎨🦖
-              </div>
-              
-              <div className="max-w-2xl space-y-4 relative z-10">
-                <span className="text-xs font-extrabold tracking-widest uppercase text-pink-100">COMMUNITY TESTIMONIAL</span>
-                <p className="text-xl sm:text-2xl font-semibold italic leading-relaxed">
-                  "Mini Paint Station completely revolutionized our family paint nights! No messy floor drops, high quality organic paints, and my 5-year-old child spent 3 hours focusing on his 3D plaster bear kit."
-                </p>
-                <div>
-                  <h4 className="font-extrabold text-sm text-white">Sarah Jenkins</h4>
-                  <p className="text-xs text-pink-100">Mother of two, Art School Educator</p>
-                </div>
-              </div>
-            </div>
+            {/* AUTHENTIC PAKISTANI PARENT TESTIMONIALS & PHOTO SHOWCASE */}
+            <TestimonialsSection triggerWhatsAppQuery={triggerWhatsAppQuery} />
 
           </div>
         )}
@@ -3098,90 +3262,10 @@ export default function App() {
 
         {/* ================= PARENT RESOURCES VIEW ================= */}
         {currentTab === "resources" && (
-          <div className="space-y-8 max-w-4xl mx-auto animate-fade-in">
-            <div className="text-center space-y-2">
-              <span className="text-pink-500 font-extrabold text-xs tracking-wider uppercase bg-pink-50 border border-pink-100 px-3 py-1 rounded-full">
-                Guides & Activities
-              </span>
-              <h1 className="text-3xl font-black text-stone-900">Parent Resources Hub</h1>
-              <p className="text-xs sm:text-sm text-stone-500 font-medium leading-relaxed">
-                Nurture your child's cognitive development and hand-eye coordination with curated guides, printable stencils, and coloring books designed by child art therapists.
-              </p>
-            </div>
-
-            {/* Quick reading items */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
-              {/* Card A */}
-              <div className="bg-white border border-stone-200 p-6 rounded-3xl space-y-4">
-                <span className="text-[10px] font-black text-pink-500 uppercase tracking-widest block">
-                  Art & Cognitive Growth
-                </span>
-                <h3 className="text-base font-extrabold text-stone-900">How 3D Plaster Painting Improves Child Focus</h3>
-                <p className="text-xs text-stone-500 leading-relaxed font-semibold">
-                  Unlike flat drawing sheets, tactile three-dimensional plaster figures engage multiple sensory nodes in children's brains, increasing concentration periods by up to 40% and helping improve visual coordination.
-                </p>
-                <button 
-                  onClick={() => triggerWhatsAppQuery("Can you send me your full PDF guide on Art & Cognitive development?")}
-                  className="text-stone-900 font-bold text-xs flex items-center gap-1 hover:text-pink-500"
-                >
-                  Request Full PDF Guide <ChevronRight className="w-4 h-4 text-pink-500" />
-                </button>
-              </div>
-
-              {/* Card B */}
-              <div className="bg-white border border-stone-200 p-6 rounded-3xl space-y-4">
-                <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest block">
-                  Safety Measures
-                </span>
-                <h3 className="text-base font-extrabold text-stone-900">Understanding Paint Safety & Washability</h3>
-                <p className="text-xs text-stone-500 leading-relaxed font-semibold">
-                  Our custom formula paints are strictly organic-pigment based, gluten-free, and lead-free. They remain moist to avoid choking flakes and dissolve instantly on clothing or skin with simple warm water.
-                </p>
-                <button 
-                  onClick={() => triggerWhatsAppQuery("Hi, I want to learn more about your paint's ingredient sheet.")}
-                  className="text-stone-900 font-bold text-xs flex items-center gap-1 hover:text-amber-600"
-                >
-                  Request Material Sheet <ChevronRight className="w-4 h-4 text-amber-500" />
-                </button>
-              </div>
-
-            </div>
-
-            {/* Printable downloads checklist */}
-            <div className="bg-amber-50/50 border border-amber-200/60 p-6 rounded-3xl space-y-4">
-              <div>
-                <h3 className="text-base font-extrabold text-amber-900">Free Printable Stencils & Coloring PDFs</h3>
-                <p className="text-xs text-amber-800 leading-normal font-medium">
-                  We upload new outlines and stories monthly. Click a link below to send a WhatsApp request and we'll reply with the high-resolution printable files absolutely free!
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {[
-                  "Jurassic Dinosaur Kingdom Story Book (PDF)",
-                  "Fairy Castle Mandala Coloring Set (PDF)",
-                  "Creative Animal 3D Plaster Guide (PDF)",
-                  "First Steps Brush Painting Guide for Ages 3-5 (PDF)"
-                ].map((item, idx) => (
-                  <div 
-                    key={idx} 
-                    onClick={() => triggerWhatsAppQuery(`Hi Mini Paint Station! I would like to get the free PDF printable: ${item}`)}
-                    className="bg-white hover:bg-stone-50 border border-amber-250/40 px-4 py-3.5 rounded-2xl flex items-center justify-between cursor-pointer shadow-xs transition-all"
-                  >
-                    <div className="flex items-center gap-2">
-                      <span className="text-lg">📄</span>
-                      <span className="text-[11px] font-bold text-stone-700">{item}</span>
-                    </div>
-                    <span className="text-[10px] font-black text-pink-500 flex items-center gap-0.5 uppercase">
-                      Get Free <ArrowRight className="w-3.5 h-3.5" />
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
+          <ParentResources 
+            onNavigateTab={setCurrentTab} 
+            triggerWhatsAppQuery={triggerWhatsAppQuery} 
+          />
         )}
 
 
@@ -3218,7 +3302,7 @@ export default function App() {
                       <Mail className="w-5 h-5 text-pink-400 mt-0.5" />
                       <div>
                         <span className="block text-[11px] text-stone-300 font-bold uppercase">Email Inquiry</span>
-                        <span className="text-xs font-extrabold text-white">info@minipaintstation.com</span>
+                        <span className="text-xs font-extrabold text-white">info@minipaintstation.shop</span>
                       </div>
                     </div>
 

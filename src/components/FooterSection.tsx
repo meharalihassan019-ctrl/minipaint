@@ -155,25 +155,37 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
             <li>
               <button onClick={() => onNavigateTab("home")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
                 <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
-                <span>Home & 3D Interactive Studio</span>
+                <span>Home & Best Sellers</span>
               </button>
             </li>
             <li>
               <button onClick={() => onNavigateTab("products")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
                 <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
-                <span>Creative Toy Shop (All Products)</span>
+                <span>Plaster Kits Shop (All Items)</span>
+              </button>
+            </li>
+            <li>
+              <button onClick={() => onNavigateTab("games")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
+                <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
+                <span>Kids Games Zone 🎮 (Free)</span>
               </button>
             </li>
             <li>
               <button onClick={() => onNavigateTab("studio")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
                 <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
-                <span>Kids Virtual Painting Canvas</span>
+                <span>3D Toy Studio & Canvas 🎨</span>
               </button>
             </li>
             <li>
               <button onClick={() => onNavigateTab("stencil")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
                 <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
-                <span>AI Custom Stencil Generator</span>
+                <span>AI Coloring Stencil Maker</span>
+              </button>
+            </li>
+            <li>
+              <button onClick={() => onNavigateTab("resources")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
+                <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
+                <span>Parent Resources & Blog Guides</span>
               </button>
             </li>
             <li>
@@ -205,6 +217,15 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               <div>
                 <span className="block font-bold text-white">WhatsApp / Phone:</span>
                 <span className="text-[11px] text-stone-300 font-mono font-bold">{storePhone}</span>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-2.5">
+              <Mail className="w-4 h-4 text-pink-400 shrink-0 mt-0.5" />
+              <div>
+                <span className="block font-bold text-white">Email & Website:</span>
+                <a href="mailto:info@minipaintstation.shop" className="text-[11px] text-pink-400 hover:underline block">info@minipaintstation.shop</a>
+                <span className="text-[10px] text-stone-500 font-mono">minipaintstation.shop</span>
               </div>
             </div>
 
