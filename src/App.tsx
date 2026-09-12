@@ -60,6 +60,8 @@ import { FooterSection } from "./components/FooterSection";
 import { KidsGameZone } from "./components/KidsGameZone";
 import { ParentResources } from "./components/ParentResources";
 import { TestimonialsSection } from "./components/TestimonialsSection";
+import { PWAInstallBanner } from "./components/PWAInstallBanner";
+import { OfflineIndicator } from "./components/OfflineIndicator";
 
 // --- TYPES ---
 type Tab = "home" | "products" | "games" | "studio" | "stencil" | "resources" | "contact";
@@ -1772,17 +1774,20 @@ export default function App() {
             ))}
           </nav>
 
-          {/* Cart Icon & Count Badge (Pink button in screenshot) */}
-          <button 
-            onClick={() => setCartOpen(true)}
-            className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black text-xs px-5 py-2.5 rounded-2xl flex items-center gap-2.5 shadow-md shadow-pink-500/15 transition-all cursor-pointer"
-          >
-            <ShoppingBag className="w-4 h-4 text-white" />
-            <span>Cart</span>
-            <span className="bg-white text-pink-600 text-[10px] font-extrabold px-2 py-0.5 rounded-full">
-              {cart.reduce((total, i) => total + i.quantity, 0)}
-            </span>
-          </button>
+          {/* Header Action Buttons (Install App + Cart) */}
+          <div className="flex items-center gap-2">
+            <PWAInstallBanner variant="header-button" />
+            <button 
+              onClick={() => setCartOpen(true)}
+              className="bg-pink-500 hover:bg-pink-600 active:scale-95 text-white font-black text-xs px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-2xl flex items-center gap-1.5 sm:gap-2.5 shadow-md shadow-pink-500/15 transition-all cursor-pointer"
+            >
+              <ShoppingBag className="w-4 h-4 text-white" />
+              <span className="hidden sm:inline">Cart</span>
+              <span className="bg-white text-pink-600 text-[10px] font-extrabold px-1.5 sm:px-2 py-0.5 rounded-full">
+                {cart.reduce((total, i) => total + i.quantity, 0)}
+              </span>
+            </button>
+          </div>
 
         </div>
 
@@ -3406,6 +3411,10 @@ export default function App() {
         triggerWhatsAppQuery={triggerWhatsAppQuery}
         storePhone={storePhone}
       />
+
+      {/* --- PWA INSTALL BANNER & OFFLINE CONNECTIVITY INDICATOR --- */}
+      <PWAInstallBanner variant="banner" />
+      <OfflineIndicator />
     </>
   )}
 
