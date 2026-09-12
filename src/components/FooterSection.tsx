@@ -183,9 +183,15 @@ export const FooterSection: React.FC<FooterSectionProps> = ({
               </button>
             </li>
             <li>
+              <button onClick={() => onNavigateTab("blog")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all text-pink-300 font-bold">
+                <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
+                <span>Blog & Art Guides 📝 (Rank Math SEO)</span>
+              </button>
+            </li>
+            <li>
               <button onClick={() => onNavigateTab("resources")} className="hover:text-pink-400 flex items-center gap-1.5 transition-all">
                 <ChevronRight className="w-3.5 h-3.5 text-pink-500" />
-                <span>Parent Resources & Blog Guides</span>
+                <span>Parent Resources & Guides</span>
               </button>
             </li>
             <li>

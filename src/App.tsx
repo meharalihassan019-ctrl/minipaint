@@ -62,9 +62,11 @@ import { ParentResources } from "./components/ParentResources";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { PWAInstallBanner } from "./components/PWAInstallBanner";
 import { OfflineIndicator } from "./components/OfflineIndicator";
+import { BlogSection } from "./components/BlogSection";
+import { BlogPreviewHome } from "./components/BlogPreviewHome";
 
 // --- TYPES ---
-type Tab = "home" | "products" | "games" | "studio" | "stencil" | "resources" | "contact";
+type Tab = "home" | "products" | "games" | "studio" | "stencil" | "resources" | "contact" | "blog";
 type Tool = "brush" | "bucket" | "stamp" | "eraser";
 type StampType = "star" | "heart" | "smile" | "crown" | "butterfly";
 
@@ -732,6 +734,7 @@ const TEMPLATES: DrawingTemplate[] = [
 
 export default function App() {
   const [currentTab, setCurrentTab] = useState<Tab>("home");
+  const [initialBlogSlug, setInitialBlogSlug] = useState<string | null>(null);
   const [cart, setCart] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedProductCategory, setSelectedProductCategory] = useState<string>("all");
@@ -748,6 +751,15 @@ export default function App() {
       const hash = window.location.hash.toLowerCase();
       if (hash === "#admin" || window.location.search.includes("admin")) {
         setIsAdminOpen(true);
+      } else if (hash.startsWith("#blog/") || hash.startsWith("#post/")) {
+        const slug = hash.replace(/^#(blog|post)\//, "");
+        if (slug) {
+          setInitialBlogSlug(slug);
+        }
+        setCurrentTab("blog");
+      } else if (hash === "#blog" || hash === "#blogs" || hash === "#guides") {
+        setInitialBlogSlug(null);
+        setCurrentTab("blog");
       } else if (hash === "#products" || hash === "#shop") {
         setCurrentTab("products");
       } else if (hash === "#kids-games" || hash === "#games") {
@@ -756,7 +768,7 @@ export default function App() {
         setCurrentTab("studio");
       } else if (hash === "#ai-stencil" || hash === "#stencil") {
         setCurrentTab("stencil");
-      } else if (hash === "#resources" || hash === "#blog") {
+      } else if (hash === "#resources") {
         setCurrentTab("resources");
       } else if (hash === "#contact") {
         setCurrentTab("contact");
@@ -816,6 +828,11 @@ export default function App() {
         title: "Contact Mini Paint Station Sahiwal | WhatsApp Orders & Delivery Pakistan",
         desc: "Get in touch with Mini Paint Station in Sahiwal City, Punjab. WhatsApp 0310-6541965 for custom birthday kits, wholesale preschool supplies, and Cash on Delivery.",
         hash: "#contact"
+      },
+      blog: {
+        title: "Kids Art, DIY Crafts & Parenting Blog Pakistan | Mini Paint Station",
+        desc: "Read step-by-step guides on plaster painting, return gift ideas, screen-free activities and kids crafts in Pakistan with Rank Math SEO optimization.",
+        hash: "#blog"
       }
     };
 
@@ -1689,16 +1706,19 @@ export default function App() {
       {/* --- FLOATING ORDER WHATSAPP BUTTON --- */}
       <button 
         onClick={() => triggerWhatsAppQuery("Hi! I want to order custom painting kits for my children.")}
-        className="fixed bottom-6 right-6 z-40 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 transition-all group"
+        className="fixed bottom-6 right-3 sm:right-6 z-40 bg-emerald-500 hover:bg-emerald-600 active:scale-95 text-white font-bold px-3.5 sm:px-5 py-2.5 sm:py-3.5 rounded-full shadow-2xl flex items-center gap-2 transition-all group"
         id="whatsapp-floater"
       >
-        <span className="relative flex h-3 w-3">
+        <span className="relative flex h-2.5 w-2.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-100"></span>
+          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-100"></span>
         </span>
-        <MessageSquare className="w-5 h-5 text-white" />
-        <span className="text-sm font-bold tracking-tight">Order On WhatsApp</span>
+        <MessageSquare className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        <span className="text-xs sm:text-sm font-bold tracking-tight">WhatsApp</span>
       </button>
+
+      {/* --- FLOATING MOBILE PWA DOWNLOAD BUTTON (On the left, never overlaps WhatsApp) --- */}
+      <PWAInstallBanner variant="mobile-fab" />
 
       {/* --- RENDER ADMIN DASHBOARD IF OPEN --- */}
       {isAdminOpen ? (
@@ -1721,6 +1741,11 @@ export default function App() {
               </span>
               <span className="truncate">{announcementText}</span>
             </div>
+          </div>
+
+          {/* Dedicated Mobile PWA Download Top Bar */}
+          <div className="md:hidden">
+            <PWAInstallBanner variant="mobile-top-bar" />
           </div>
 
           {/* --- HEADER NAVIGATION (Perfectly Replicating Screenshot Layout) --- */}
@@ -1751,6 +1776,7 @@ export default function App() {
               { id: "home", label: "Home" },
               { id: "products", label: "Products" },
               { id: "games", label: "Kids Games 🎮", isSpecial: true },
+              { id: "blog", label: "Blog & Guides 📝" },
               { id: "studio", label: "Kids Studio 🎨" },
               { id: "stencil", label: "AI Stencil Maker 🤖" },
               { id: "resources", label: "Parent Resources" },
@@ -1793,10 +1819,12 @@ export default function App() {
 
         {/* Mobile Horizontal Navigation Scroll Bar */}
         <div className="md:hidden mt-2.5 pt-2 border-t border-rose-100/60 overflow-x-auto flex items-center gap-1.5 pb-1 no-scrollbar">
+          <PWAInstallBanner variant="mobile-nav-pill" />
           {[
             { id: "home", label: "Home" },
             { id: "products", label: "Products" },
             { id: "games", label: "Kids Games 🎮", isSpecial: true },
+            { id: "blog", label: "Blog 📝" },
             { id: "studio", label: "Studio 🎨" },
             { id: "stencil", label: "AI Stencil 🤖" },
             { id: "resources", label: "Resources" },
@@ -2665,6 +2693,9 @@ export default function App() {
               </button>
             </div>
 
+            {/* PWA MOBILE APP DOWNLOAD SHOWCASE CARD */}
+            <PWAInstallBanner variant="card" />
+
             {/* PRODUCT CATEGORIES / DISCOVERY CARDS */}
             <div className="space-y-6 pt-10 border-t border-rose-100/50">
               <div className="text-center max-w-xl mx-auto space-y-2">
@@ -2754,6 +2785,20 @@ export default function App() {
 
             {/* AUTHENTIC PAKISTANI PARENT TESTIMONIALS & PHOTO SHOWCASE */}
             <TestimonialsSection triggerWhatsAppQuery={triggerWhatsAppQuery} />
+
+            {/* BLOG & GUIDES PREVIEW SHOWCASE */}
+            <BlogPreviewHome 
+              onViewAllBlogs={() => {
+                setInitialBlogSlug(null);
+                setCurrentTab("blog");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+              onReadPost={(slug) => {
+                setInitialBlogSlug(slug);
+                setCurrentTab("blog");
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
+            />
 
           </div>
         )}
@@ -3400,6 +3445,23 @@ export default function App() {
 
             </div>
           </div>
+        )}
+
+        {/* ================= BLOG & GUIDES VIEW ================= */}
+        {currentTab === "blog" && (
+          <BlogSection
+            initialPostSlug={initialBlogSlug}
+            onClearPostSlug={() => setInitialBlogSlug(null)}
+            onSelectProduct={(id) => {
+              const found = productList.find(p => p.id === id);
+              if (found) {
+                setSelectedProductForDetail(found);
+              } else {
+                setCurrentTab("products");
+              }
+            }}
+            onOpenWhatsApp={triggerWhatsAppQuery}
+          />
         )}
 
       </main>

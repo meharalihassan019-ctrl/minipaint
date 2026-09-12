@@ -28,8 +28,10 @@ import {
   Layers,
   Clock,
   ArrowUpRight,
-  Upload
+  Upload,
+  FileText
 } from "lucide-react";
+import { BlogManager } from "./admin/BlogManager";
 
 export interface ProductItem {
   id: string;
@@ -80,7 +82,7 @@ export default function AdminDashboard({
   announcementText,
   onUpdateAnnouncement
 }: AdminDashboardProps) {
-  const [activeAdminTab, setActiveAdminTab] = useState<"overview" | "products" | "images" | "orders" | "settings">("overview");
+  const [activeAdminTab, setActiveAdminTab] = useState<"overview" | "products" | "images" | "orders" | "settings" | "blogs">("overview");
   
   // Authentication State
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
@@ -535,6 +537,18 @@ export default function AdminDashboard({
           >
             <Settings className="w-4 h-4 text-rose-400" />
             <span>Store Settings</span>
+          </button>
+
+          <button
+            onClick={() => setActiveAdminTab("blogs")}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-2 whitespace-nowrap ${
+              activeAdminTab === "blogs"
+                ? "bg-pink-600 text-white shadow-sm font-black"
+                : "text-stone-600 hover:bg-stone-100"
+            }`}
+          >
+            <FileText className="w-4 h-4 text-pink-400" />
+            <span>Blog & Rank Math SEO ✨</span>
           </button>
         </div>
       </div>
@@ -1120,6 +1134,16 @@ export default function AdminDashboard({
               </form>
             </div>
           </div>
+        )}
+
+        {/* ================= 6. BLOGS & RANK MATH SEO TAB ================= */}
+        {activeAdminTab === "blogs" && (
+          <BlogManager
+            onNotification={(msg) => {
+              setSaveSuccessNotice(msg);
+              setTimeout(() => setSaveSuccessNotice(""), 3000);
+            }}
+          />
         )}
       </main>
     </div>

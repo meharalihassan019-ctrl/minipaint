@@ -9,20 +9,33 @@ export function usePWAInstall() {
   const [deferredPrompt, setDeferredPrompt] = useState<BeforeInstallPromptEvent | null>(null);
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isInAppBrowser, setIsInAppBrowser] = useState(false);
 
   useEffect(() => {
-    // Detect standalone mode (already installed & running full-screen)
+    // Only detect true standalone mode (when actually running as an installed PWA window)
+    // CRITICAL: DO NOT check document.referrer.includes('android-app://') because that is triggered
+    // whenever a user taps a link inside WhatsApp, Telegram, Instagram, etc.
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true ||
-      document.referrer.includes('android-app://');
+      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
     
     setIsInstalled(isStandalone);
 
-    // Detect iOS devices
-    const userAgent = window.navigator.userAgent.toLowerCase();
-    const isIOSDevice = /iphone|ipad|ipod/.test(userAgent);
-    setIsIOS(isIOSDevice);
+    // Detect user agent platforms
+    const ua = (window.navigator.userAgent || '').toLowerCase();
+    const ios = /iphone|ipad|ipod/.test(ua);
+    const android = /android/.test(ua);
+    const mobile = ios || android || /mobile|tablet/.test(ua) || window.innerWidth < 768;
+    
+    // In-app browsers (WhatsApp, Instagram, Facebook, FB Messenger, Line, etc.)
+    const inApp = /fban|fbav|instagram|whatsapp|wv|micromessenger/.test(ua);
+
+    setIsIOS(ios);
+    setIsAndroid(android);
+    setIsMobile(mobile);
+    setIsInAppBrowser(inApp);
 
     const handleBeforeInstallPrompt = (e: Event) => {
       e.preventDefault();
@@ -63,6 +76,9 @@ export function usePWAInstall() {
     isInstallable: !!deferredPrompt,
     isInstalled,
     isIOS,
+    isAndroid,
+    isMobile,
+    isInAppBrowser,
     install,
     deferredPrompt,
   };
